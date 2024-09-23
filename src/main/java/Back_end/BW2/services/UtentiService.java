@@ -73,35 +73,35 @@ public class UtentiService {
     public UtenteRespDTO findByIdAndUpdate(UUID utenteId, UtenteDTO body) {
 
         this.utentiRepository.findByEmail(body.email()).ifPresent(author -> {
-            throw new BadRequestException("L'email " + body.email() + " è già in uso.");
+            if (!author.getId().equals(utenteId)) {
+                throw new BadRequestException("L'email " + body.email() + " è già in uso.");
+            }
         });
-
 
         RuoloUtente ruoloUtente = null;
 
-
         try {
-            ruoloUtente = RuoloUtente.valueOf(body.ruoloUtente().toUpperCase());
-
+            String ruoloInput = body.ruoloUtente().toUpperCase(); // Rimuove spazi e converte in maiuscolo
+            ruoloUtente = RuoloUtente.valueOf(ruoloInput);  // Corrisponde all'enum
             if (ruoloUtente == RuoloUtente.ADMIN) {
-                throw new BadRequestException("Errore. Nessuno può inserirsi come ADMIN");
-            } else {
+                throw new Error("Errore. Nessuno può inserirsi come ADMIN");
 
-                Utente trovato = this.findById(utenteId);
-                trovato.setUsername(body.username());
-                trovato.setEmail(body.email());
-                trovato.setPassword(bcrypt.encode(body.password()));
-                trovato.setNome(body.nome());
-                trovato.setCognome(body.cognome());
-                trovato.setRuoloUtente(ruoloUtente);
-
-                // salvo il nuovo record
-                return new UtenteRespDTO(this.utentiRepository.save(trovato).getId());
             }
         } catch (Exception e) {
             throw new BadRequestException("Errore. Il ruolo inserito non esiste.");
         }
 
+        Utente trovato = this.findById(utenteId);
+        trovato.setUsername(body.username());
+        trovato.setEmail(body.email());
+        trovato.setPassword(bcrypt.encode(body.password()));
+        trovato.setNome(body.nome());
+        trovato.setCognome(body.cognome());
+        trovato.setRuoloUtente(ruoloUtente);
+
+
+        // salvo il nuovo record
+        return new UtenteRespDTO(this.utentiRepository.save(trovato).getId());
 
     }
 }
