@@ -1,6 +1,9 @@
 package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Utente;
+import Back_end.BW2.enums.RuoloUtente;
+import Back_end.BW2.exceptions.BadRequestException;
+import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.repositories.UtentiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
