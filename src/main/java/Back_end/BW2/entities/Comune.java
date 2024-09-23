@@ -10,26 +10,21 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Entity
-@Table(name = "province")
+@Table(name = "comuni")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Provincia {
+public class Comune {
 
     @Id
     @GeneratedValue
-
     private UUID id;
-
     private String nome;
-    private String sigla;
-    private String regione;
-
     @ManyToOne
-    @JoinColumn(name = "comune_id", referencedColumnName = "id")
-    private Comune comune;
+    @JoinColumn(name = "provincia_id")
+    private Provincia provincia;
+
 
 
 }
-
