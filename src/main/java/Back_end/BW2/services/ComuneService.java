@@ -35,7 +35,10 @@ public class ComuneService {
                 Comune comune = new Comune();
                 comune.setNome(riga[2]);
                 Optional<Provincia> provinciaAssociazione = Optional.ofNullable(provinciaRepository.findByNome(riga[3]));
-                provinciaAssociazione.ifPresent(comune::setProvincia);
+                if (provinciaAssociazione.isPresent()) {
+                    comune.setProvincia(provinciaAssociazione.get());
+                }
+
 
                 comuni.add(comune);
             }

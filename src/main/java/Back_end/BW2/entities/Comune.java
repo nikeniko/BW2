@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Comune {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO) // o strategy = GenerationType.IDENTITY
     private UUID id;
     private String nome;
     @ManyToOne
