@@ -4,6 +4,7 @@ import Back_end.BW2.entities.Fatture;
 import Back_end.BW2.services.FattureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +31,7 @@ public class FattureController {
         return this.fattureService.findAllFatture(page, size, sortBy);
     }
 
-    // 2 --> POST
-
-
-    // 3 --> GET ID
+    // 2 --> GET ID
 
     @GetMapping("/{fattureId}")
     public Fatture findIdFatture(@PathVariable UUID fattureId) {
@@ -41,13 +39,18 @@ public class FattureController {
     }
 
 
-    // 4 --> PUT
+    // 3 --> PUT
 
     public Fatture findIdAndUpdate(@PathVariable UUID fattureId, @RequestBody Fatture body) {
         return this.fattureService.findIdAndUpdate(fattureId, body);
     }
 
-    // 5 --> DELETE
+    // 4 --> DELETE
 
+    @DeleteMapping("/{fattureId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Fatture findIdFattureAndDelete(@PathVariable UUID fattureId) {
+        return this.fattureService.findIdFattureAndDelete(fattureId);
+    }
 
 }

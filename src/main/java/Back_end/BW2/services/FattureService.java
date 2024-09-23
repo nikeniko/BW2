@@ -31,16 +31,13 @@ public class FattureService {
         return this.fattureRepository.findAll(pageable);
     }
 
-    // 2 --> POST
-
-
-    // 3 --> GET ID
+    // 2 --> GET ID
 
     public Fatture findIdFatture(UUID fattureId) {
         return this.fattureRepository.findById(fattureId).orElseThrow(() -> new NotFoundException(fattureId));
     }
 
-    // 4 --> PUT
+    // 3 --> PUT
 
     public Fatture findIdAndUpdate(UUID fattureId, Fatture newUserData) {
         Fatture found = this.findIdFatture(fattureId);
@@ -51,6 +48,13 @@ public class FattureService {
         return this.fattureRepository.save(found);
     }
 
-    // 5 --> DELETE
+    // 4 --> DELETE
+
+    public Fatture findIdFattureAndDelete(UUID fattureId) {
+        Fatture found = this.findIdFatture(fattureId);
+        this.fattureRepository.delete(found);
+        return found;
+    }
+
 
 }
