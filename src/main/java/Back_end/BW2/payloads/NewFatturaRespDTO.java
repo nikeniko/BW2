@@ -1,4 +1,4 @@
-package Back_end.BW2.playloads;
+package Back_end.BW2.payloads;
 
 import java.util.UUID;
 

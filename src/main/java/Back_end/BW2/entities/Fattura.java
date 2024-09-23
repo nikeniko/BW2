@@ -47,20 +47,18 @@ public class Fattura {
         this.cliente = cliente;
     }
 
-    public Fattura(LocalDate data, double importo, String s) {
-
-    }
-
     // TO STRING
+
 
     @Override
     public String toString() {
-        return "Fatture{" +
+        return "Fattura{" +
                 "id=" + id +
                 ", data=" + data +
                 ", importo=" + importo +
                 ", numeroFattura=" + numeroFattura +
                 ", statoFatture=" + statoFatture +
+                ", cliente=" + cliente +
                 '}';
     }
 }

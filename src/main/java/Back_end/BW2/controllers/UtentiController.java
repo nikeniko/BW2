@@ -61,4 +61,6 @@ public class UtentiController {
     public UtenteRespDTO updateProfile(@AuthenticationPrincipal Utente utenteCorrenteAutenticato, @RequestBody @Validated UtenteDTO body) {
         return this.utentiService.findByIdAndUpdate(utenteCorrenteAutenticato.getId(), body);
     }
+
+    
 }

@@ -1,8 +1,11 @@
 package Back_end.BW2.services;
 
+import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.entities.Fattura;
+import Back_end.BW2.enums.StatoFatture;
 import Back_end.BW2.exceptions.NotFoundException;
-import Back_end.BW2.playloads.NewFatturaDTO;
+import Back_end.BW2.payloads.NewFatturaDTO;
+import Back_end.BW2.repositories.ClientiRepository;
 import Back_end.BW2.repositories.FattureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,8 @@ public class FattureService {
 
     @Autowired
     private FattureRepository fattureRepository;
+    @Autowired
+    private ClientiRepository clientiRepository;
 
     // METODI
 
@@ -59,7 +64,9 @@ public class FattureService {
     // 5 --> SAVE
 
     public Fattura save(NewFatturaDTO body) {
-        Fattura newFattura = new Fattura(body.data(), body.importo(), body.statoFatture());
+        Cliente foundCliente = this.clientiRepository.findById(UUID.fromString(body.cliente())).orElseThrow(() -> new NotFoundException(UUID.fromString(body.cliente())));
+        StatoFatture statoFatture = StatoFatture.valueOf(body.statoFatture());
+        Fattura newFattura = new Fattura(body.data(), body.importo(), body.numeroFattura(), statoFatture, foundCliente);
 
         return this.fattureRepository.save(newFattura);
     }
