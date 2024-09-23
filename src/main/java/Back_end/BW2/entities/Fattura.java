@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Fatture {
+public class Fattura {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
@@ -35,11 +35,15 @@ public class Fatture {
 
     // COSTRUTTORI
 
-    public Fatture(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
+    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
         this.data = data;
         this.importo = importo;
         this.numeroFattura = numeroFattura;
         this.statoFatture = statoFatture;
+    }
+
+    public Fattura(LocalDate data, double importo, String s) {
+
     }
 
     // TO STRING

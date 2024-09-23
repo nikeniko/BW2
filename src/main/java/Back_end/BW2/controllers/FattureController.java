@@ -1,6 +1,6 @@
 package Back_end.BW2.controllers;
 
-import Back_end.BW2.entities.Fatture;
+import Back_end.BW2.entities.Fattura;
 import Back_end.BW2.services.FattureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +25,7 @@ public class FattureController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Fatture> findAllFatture(@RequestParam(defaultValue = "0") int page,
+    public Page<Fattura> findAllFatture(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "10") int size,
                                         @RequestParam(defaultValue = "id") String sortBy) {
         return this.fattureService.findAllFatture(page, size, sortBy);
@@ -34,14 +34,14 @@ public class FattureController {
     // 2 --> GET ID
 
     @GetMapping("/{fattureId}")
-    public Fatture findIdFatture(@PathVariable UUID fattureId) {
+    public Fattura findIdFatture(@PathVariable UUID fattureId) {
         return this.fattureService.findIdFatture(fattureId);
     }
 
 
     // 3 --> PUT
 
-    public Fatture findIdAndUpdate(@PathVariable UUID fattureId, @RequestBody Fatture body) {
+    public Fattura findIdAndUpdate(@PathVariable UUID fattureId, @RequestBody Fattura body) {
         return this.fattureService.findIdAndUpdate(fattureId, body);
     }
 
@@ -49,7 +49,7 @@ public class FattureController {
 
     @DeleteMapping("/{fattureId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Fatture findIdFattureAndDelete(@PathVariable UUID fattureId) {
+    public Fattura findIdFattureAndDelete(@PathVariable UUID fattureId) {
         return this.fattureService.findIdFattureAndDelete(fattureId);
     }
 
