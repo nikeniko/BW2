@@ -37,8 +37,7 @@ public class Utente implements UserDetails {
     @Column(name = "ruolo_utente")
     private RuoloUtente ruoloUtente;
 
-    @OneToMany()
-    @JoinColumn(name = "clientiList")
+    @OneToMany(mappedBy = "utenteId")
     private List<Cliente> clientiList;
 
     public Utente(String username, String email, String password, String nome, String cognome, String avatar, RuoloUtente ruoloUtente) {

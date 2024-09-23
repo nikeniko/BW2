@@ -1,6 +1,7 @@
 package Back_end.BW2.entities;
 
 import Back_end.BW2.enums.TipoAzienda;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -45,9 +46,12 @@ public class Cliente {
     @Column(name = "tipo_azienda")
     private TipoAzienda tipoAzienda;
 
+    @ManyToOne
+    @JoinColumn(name = "utente_id")
+    private Utente utenteId;
 
-    @OneToMany
-    @JoinColumn(name = "fattureList")
+    @JsonIgnore
+    @OneToMany(mappedBy = "clienteId")
     private List<Fattura> fattureList;
 
     @OneToOne

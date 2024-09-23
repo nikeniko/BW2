@@ -1,8 +1,8 @@
 package Back_end.BW2.security;
 
+import Back_end.BW2.entities.Utente;
 import Back_end.BW2.exceptions.UnauthorizedException;
-import com.example.gestioneEventi_S7_L5.entities.Utente;
-import com.example.gestioneEventi_S7_L5.services.UtentiService;
+import Back_end.BW2.services.UtentiService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

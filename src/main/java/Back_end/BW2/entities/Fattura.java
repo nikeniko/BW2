@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @NoArgsConstructor
-public class Fatture {
+public class Fattura {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
@@ -33,9 +33,13 @@ public class Fatture {
     @Enumerated(EnumType.STRING)
     private StatoFatture statoFatture;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente clienteId;
+
     // COSTRUTTORI
 
-    public Fatture(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
+    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
         this.data = data;
         this.importo = importo;
         this.numeroFattura = numeroFattura;
