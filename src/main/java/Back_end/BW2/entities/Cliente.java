@@ -54,15 +54,15 @@ public class Cliente {
     @OneToMany(mappedBy = "clienteId")
     private List<Fattura> fattureList;
 
-    @OneToOne
+   /* @OneToOne
     private Indirizzo indirizzoSedeLegale;
 
     @OneToOne
-    private Indirizzo indirizzoSedeOperativa;
+    private Indirizzo indirizzoSedeOperativa;*/
 
     public Cliente(String ragioneSociale, long partitaIva, LocalDate dataInserimento, LocalDate dataUltimoContatto,
                    long fatturatoAnnuale, String pec, long telefono, String emailContatto, String nomeContatto, String cognomeContatto,
-                   String logoAziendale, TipoAzienda tipoAzienda, Indirizzo indirizzoSedeLegale, Indirizzo indirizzoSedeOperativa) {
+                   String logoAziendale, TipoAzienda tipoAzienda/*, Indirizzo indirizzoSedeLegale, Indirizzo indirizzoSedeOperativa*/) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.dataInserimento = dataInserimento;
@@ -75,7 +75,7 @@ public class Cliente {
         this.cognomeContatto = cognomeContatto;
         this.logoAziendale = logoAziendale;
         this.tipoAzienda = tipoAzienda;
-        this.indirizzoSedeLegale = indirizzoSedeLegale;
-        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+//        this.indirizzoSedeLegale = indirizzoSedeLegale;
+//        this.indirizzoSedeOperativa = indirizzoSedeOperativa;
     }
 }

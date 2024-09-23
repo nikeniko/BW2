@@ -69,4 +69,37 @@ public class UtentiService {
         Utente trovato = this.findById(utenteId);
         this.utentiRepository.delete(trovato);
     }
+
+    public UtenteRespDTO findByIdAndUpdate(UUID utenteId, UtenteDTO body) {
+
+        this.utentiRepository.findByEmail(body.email()).ifPresent(author -> {
+            throw new BadRequestException("L'email " + body.email() + " è già in uso.");
+        });
+
+        RuoloUtente ruoloUtente;
+
+        try {
+            ruoloUtente = RuoloUtente.valueOf(body.ruoloUtente().toUpperCase());
+            if (ruoloUtente == RuoloUtente.ADMIN) {
+                throw new BadRequestException("Errore. Nessuno può inserirsi come ADMIN");
+            } else {
+
+                Utente trovato = this.findById(utenteId);
+                trovato.setUsername(body.username());
+                trovato.setEmail(body.email());
+                trovato.setPassword(bcrypt.encode(body.password()));
+                trovato.setNome(body.nome());
+                trovato.setCognome(body.cognome());
+                trovato.setRuoloUtente(ruoloUtente);
+
+
+                // salvo il nuovo record
+                return new UtenteRespDTO(this.utentiRepository.save(trovato).getId());
+            }
+        } catch (Exception e) {
+            throw new BadRequestException("Errore. Il ruolo inserito non esiste.");
+        }
+
+
+    }
 }
