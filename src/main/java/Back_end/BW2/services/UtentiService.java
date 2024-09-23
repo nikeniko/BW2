@@ -40,12 +40,13 @@ public class UtentiService {
         try {
             ruoloUtente = RuoloUtente.valueOf(body.ruoloUtente().toUpperCase());
             if (ruoloUtente == RuoloUtente.ADMIN)
-                throw new BadRequestException("Errore. Nessuno può inserirsi come ADMIN");
+                throw new Error("Errore. Nessuno può inserirsi come ADMIN");
         } catch (Exception e) {
             throw new BadRequestException("Errore. Il ruolo inserito non esiste.");
         }
 
-        Utente newUtente = new Utente(body.nome(), body.cognome(), body.email(), bcrypt.encode(body.password()), ruoloUtente);
+        Utente newUtente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(),
+                "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome(), ruoloUtente);
 
         // salvo il nuovo record
         return new UtenteRespDTO(this.utentiRepository.save(newUtente).getId());

@@ -1,4 +1,6 @@
 package Back_end.BW2.payloads;
 
-public record UtenteRespDTO(String utenteId) {
+import java.util.UUID;
+
+public record UtenteRespDTO(UUID utenteId) {
 }
