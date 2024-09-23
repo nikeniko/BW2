@@ -33,13 +33,18 @@ public class Fattura {
     @Enumerated(EnumType.STRING)
     private StatoFatture statoFatture;
 
+    @ManyToOne
+    @JoinColumn(name = "cliente")
+    private Cliente cliente;
+
     // COSTRUTTORI
 
-    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
+    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture, Cliente cliente) {
         this.data = data;
         this.importo = importo;
         this.numeroFattura = numeroFattura;
         this.statoFatture = statoFatture;
+        this.cliente = cliente;
     }
 
     public Fattura(LocalDate data, double importo, String s) {

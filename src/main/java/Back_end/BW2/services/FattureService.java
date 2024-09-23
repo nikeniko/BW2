@@ -51,10 +51,9 @@ public class FattureService {
 
     // 4 --> DELETE
 
-    public Fattura findIdFattureAndDelete(UUID fattureId) {
+    public void findIdFattureAndDelete(UUID fattureId) {
         Fattura found = this.findIdFatture(fattureId);
         this.fattureRepository.delete(found);
-        return found;
     }
 
     // 5 --> SAVE
