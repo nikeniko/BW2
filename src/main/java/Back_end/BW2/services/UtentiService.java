@@ -76,10 +76,13 @@ public class UtentiService {
             throw new BadRequestException("L'email " + body.email() + " è già in uso.");
         });
 
-        RuoloUtente ruoloUtente;
+
+        RuoloUtente ruoloUtente = null;
+
 
         try {
             ruoloUtente = RuoloUtente.valueOf(body.ruoloUtente().toUpperCase());
+
             if (ruoloUtente == RuoloUtente.ADMIN) {
                 throw new BadRequestException("Errore. Nessuno può inserirsi come ADMIN");
             } else {
@@ -91,7 +94,6 @@ public class UtentiService {
                 trovato.setNome(body.nome());
                 trovato.setCognome(body.cognome());
                 trovato.setRuoloUtente(ruoloUtente);
-
 
                 // salvo il nuovo record
                 return new UtenteRespDTO(this.utentiRepository.save(trovato).getId());
