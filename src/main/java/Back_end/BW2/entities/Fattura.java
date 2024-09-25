@@ -34,28 +34,31 @@ public class Fattura {
     private StatoFatture statoFatture;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente clienteId;
+    @JoinColumn(name = "cliente")
+    private Cliente cliente;
 
     // COSTRUTTORI
 
-    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture) {
+    public Fattura(LocalDate data, double importo, int numeroFattura, StatoFatture statoFatture, Cliente cliente) {
         this.data = data;
         this.importo = importo;
         this.numeroFattura = numeroFattura;
         this.statoFatture = statoFatture;
+        this.cliente = cliente;
     }
 
     // TO STRING
 
+
     @Override
     public String toString() {
-        return "Fatture{" +
+        return "Fattura{" +
                 "id=" + id +
                 ", data=" + data +
                 ", importo=" + importo +
                 ", numeroFattura=" + numeroFattura +
                 ", statoFatture=" + statoFatture +
+                ", cliente=" + cliente +
                 '}';
     }
 }
