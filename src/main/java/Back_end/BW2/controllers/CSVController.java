@@ -27,7 +27,7 @@ public class CSVController {
             File comuniFile = new ClassPathResource("allgaticsv/comuni-italiani.csv").getFile();
 
             provinciaService.importProvinceCSV(provinciaFile.getAbsolutePath());
-            comuneService.leggiComuniDaCSV(comuniFile.getAbsolutePath());
+            comuneService.importComuniCSV(comuniFile.getAbsolutePath());
 
             return "L'import dei Dati di Province and Comuni è andato a buon fine!";
         } catch (Exception e) {

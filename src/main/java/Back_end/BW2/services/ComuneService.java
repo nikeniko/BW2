@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,13 +23,14 @@ public class ComuneService {
     private ProvinciaRepository provinciaRepository;
 
 
-    public List<Comune> leggiComuniDaCSV(String filePath) {
+    public void importComuniCSV(String filePath) {
         List<Comune> comuni = new ArrayList<>();
-        String line;
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            while ((line = br.readLine()) != null) {
+            String line;
+            br.readLine();
 
+            while ((line = br.readLine()) != null) {
                 String[] riga = line.split(";");
 
                 Comune comune = new Comune();
@@ -39,12 +39,14 @@ public class ComuneService {
                 if (provinciaAssociazione.isPresent()) {
                     comune.setProvincia(provinciaAssociazione.get());
                 }
+
+
                 comuni.add(comune);
             }
-        } catch (IOException e) {
+
+            comuneRepository.saveAll(comuni);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return comuni;
     }
 }
