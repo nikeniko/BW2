@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -69,7 +71,19 @@ public class UtentiController {
         return this.utentiService.findByIdAndUpdate(utenteCorrenteAutenticato.getId(), body);
     }
 
+
     // FATTURA
+
+    // UPLOAD IMMAGINE
+    @PostMapping("/{utenteId}/avatar")
+    public Utente uploadImage(@RequestParam("avatar") MultipartFile img, @PathVariable UUID utenteId) throws IOException {
+        try {
+            return this.utentiService.uploadImagine(img, utenteId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @GetMapping("/me/fatture")
     public Fattura getFattura(@AuthenticationPrincipal Fattura fatturaCorrente) {
