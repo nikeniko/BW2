@@ -41,8 +41,6 @@ public class ProvinciaService {
                     case "Olbia Tempio" -> casella[1] = "Sassari";
                     case "Ogliastra" -> casella[1] = "Nuoro";
                 }
-
-
                 Provincia provincia = new Provincia();
                 provincia.setSigla(casella[0]);
                 provincia.setNome(casella[1]);
@@ -53,8 +51,6 @@ public class ProvinciaService {
                 } else {
                     province.add(provincia);
                 }
-
-
             }
             provinciaRepository.saveAll(province);
         } catch (Exception e) {

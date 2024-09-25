@@ -1,9 +1,11 @@
 package Back_end.BW2.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,8 +16,8 @@ import java.util.UUID;
 @ToString
 public class Ruolo {
 
-    @ManyToMany(mappedBy = "ruoli")
-    List<Utente> utenteList;
+    //    @ManyToMany(mappedBy = "ruoli")
+//    List<Utente> utenteList;
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
