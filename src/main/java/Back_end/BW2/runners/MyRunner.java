@@ -12,6 +12,7 @@ import java.io.File;
 
 @Component
 public class MyRunner implements CommandLineRunner {
+
     @Autowired
     private ProvinciaService provinciaService;
 
@@ -20,16 +21,20 @@ public class MyRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-
         try {
-            File provinciaFile = new ClassPathResource("allegaticsv/province-italiane.csv").getFile();
-            File comuniFile = new ClassPathResource("allegaticsv/comuni-italiani.csv").getFile();
 
-            provinciaService.importProvinceCSV(provinciaFile.getAbsolutePath());
-            comuneService.importComuniCSV(comuniFile.getAbsolutePath());
+            if (!provinciaService.isDatabasePopulated() && !comuneService.isDatabasePopulated()) {
+                File provinciaFile = new ClassPathResource("allegaticsv/province-italiane.csv").getFile();
+                File comuniFile = new ClassPathResource("allegaticsv/comuni-italiani.csv").getFile();
 
 
+                provinciaService.importProvinceCSV(provinciaFile.getAbsolutePath());
+                comuneService.importComuniCSV(comuniFile.getAbsolutePath());
+
+                System.out.println("File CSV importati.");
+            } else {
+                System.out.println("Database è stato già popolato.");
+            }
         } catch (Exception e) {
             throw new NotFoundException("Errore nell'import dai file CSV: " + e.getMessage());
         }

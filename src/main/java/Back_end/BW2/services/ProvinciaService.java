@@ -16,12 +16,17 @@ public class ProvinciaService {
     @Autowired
     private ProvinciaRepository provinciaRepository;
 
+    public boolean isDatabasePopulated() {
+        return provinciaRepository.count() > 0;
+    }
+
     public void importProvinceCSV(String filePath) {
         List<Provincia> province = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String riga;
             reader.readLine();
+
             while ((riga = reader.readLine()) != null) {
                 String[] casella = riga.split(";");
 
@@ -41,17 +46,18 @@ public class ProvinciaService {
                     case "Olbia Tempio" -> casella[1] = "Sassari";
                     case "Ogliastra" -> casella[1] = "Nuoro";
                 }
+
                 Provincia provincia = new Provincia();
                 provincia.setSigla(casella[0]);
                 provincia.setNome(casella[1]);
                 provincia.setRegione(casella[2]);
-
                 if (province.stream().anyMatch(obj -> obj.getNome().equals(provincia.getNome()))) {
-                    System.out.println(provincia.getNome() + " esiste gia");
+                    System.out.println(provincia.getNome() + " esiste già");
                 } else {
                     province.add(provincia);
                 }
             }
+
             provinciaRepository.saveAll(province);
         } catch (Exception e) {
             e.printStackTrace();
