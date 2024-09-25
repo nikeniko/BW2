@@ -60,7 +60,10 @@ public class Cliente {
     @OneToOne
     private Indirizzo indirizzoSedeOperativa;
 
-    public Cliente(String ragioneSociale, long partitaIva, LocalDate dataInserimento, LocalDate dataUltimoContatto, long fatturatoAnnuale, String pec, long telefono, String emailContatto, String nomeContatto, String cognomeContatto, String logoAziendale, TipoAzienda tipoAzienda, Utente utenteId, List<Fattura> fattureList, Indirizzo indirizzoSedeLegale, Indirizzo indirizzoSedeOperativa) {
+    public Cliente(String ragioneSociale, long partitaIva, LocalDate dataInserimento, LocalDate dataUltimoContatto,
+                   long fatturatoAnnuale, String pec, long telefono, String emailContatto, String nomeContatto,
+                   String cognomeContatto, TipoAzienda tipoAzienda, Utente utenteId, Indirizzo indirizzoSedeLegale,
+                   Indirizzo indirizzoSedeOperativa, String logoAziendale) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.dataInserimento = dataInserimento;
@@ -71,11 +74,11 @@ public class Cliente {
         this.emailContatto = emailContatto;
         this.nomeContatto = nomeContatto;
         this.cognomeContatto = cognomeContatto;
-        this.logoAziendale = logoAziendale;
         this.tipoAzienda = tipoAzienda;
         this.utenteId = utenteId;
-        this.fattureList = fattureList;
         this.indirizzoSedeLegale = indirizzoSedeLegale;
         this.indirizzoSedeOperativa = indirizzoSedeOperativa;
+        this.logoAziendale = logoAziendale;
     }
+
 }

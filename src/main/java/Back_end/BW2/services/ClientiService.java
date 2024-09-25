@@ -64,5 +64,24 @@ public class ClientiService {
         this.clientiRepository.delete(found);
     }
 
+    // 5 --> SAVE
+
+    public Cliente save(ClienteDTO body) {
+        Cliente newCliente = new Cliente();
+        newCliente.setRagioneSociale(body.ragioneSociale());
+        newCliente.setPartitaIva(body.partitaIva());
+        newCliente.setDataInserimento(body.dataInserimento());
+        newCliente.setDataUltimoContatto(body.dataUltimoContatto());
+        newCliente.setFatturatoAnnuale(body.fatturatoAnnuale());
+        newCliente.setPec(body.pec());
+        newCliente.setTelefono(body.telefono());
+        newCliente.setEmailContatto(body.emailContatto());
+        newCliente.setNomeContatto(body.nomeContatto());
+        newCliente.setCognomeContatto(body.cognomeContatto());
+        newCliente.setLogoAziendale(("https://ui-avatars.com/api/?name=" + body.nomeContatto() + body.cognomeContatto()));
+
+        return this.clientiRepository.save(newCliente);
+    }
+
 
 }

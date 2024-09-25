@@ -1,6 +1,7 @@
 package Back_end.BW2.controllers;
 
 import Back_end.BW2.entities.Cliente;
+import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.payloads.ClienteRespDTO;
 import Back_end.BW2.services.ClientiService;
@@ -8,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/clienti")
 public class ClientiController {
 
     // IMPORTI
@@ -32,6 +35,21 @@ public class ClientiController {
     }
 
     // 2 --> POST
+    @PostMapping("/crea")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClienteRespDTO saveCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String messages = validationResult.getAllErrors().stream()
+                    .map(objectError -> objectError.getDefaultMessage())
+                    .collect(Collectors.joining(". "));
+
+            throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
+        } else {
+
+
+            return new ClienteRespDTO(this.clientiService.save(body).getId());
+        }
+    }
 
     // 3 --> GET ID
 

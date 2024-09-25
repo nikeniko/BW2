@@ -1,5 +1,6 @@
 package Back_end.BW2.payloads;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,9 @@ public record ClienteDTO(@NotEmpty(message = "Devi inserire la ragione sociale")
                          @NotNull(message = "Inserisci il numero della fattura")
                          @Size(min = 6, max = 10, message = "La data deve essere compresa tra 6 e 10 caratteri")
                          long fatturatoAnnuale,
+                         @NotEmpty(message = "Inserisci la pec")
+                         @Email(message = "Inserisci una email valida")
+                         String pec,
                          @NotNull(message = "Inserire il numero di telefono")
                          @Size(min = 9, max = 9, message = "Il numero di telefono deve essere di 9 cifre")
                          long telefono,
@@ -34,7 +38,7 @@ public record ClienteDTO(@NotEmpty(message = "Devi inserire la ragione sociale")
                          @Size(min = 3, max = 12, message = "Il cognome deve essere compreso tra 3 e 12 caratteri")
                          String cognomeContatto,
                          @NotEmpty(message = "Inserisci il Logo aziendale")
-                         @Size(min = 3, max = 14, message = "Il logo aziendale deve essere compreso tra 3 e 14 caratteri")
+                         @Size(min = 3, max = 54, message = "Il logo aziendale deve essere compreso tra 3 e 14 caratteri")
                          String logoAziendale
 ) {
 }
