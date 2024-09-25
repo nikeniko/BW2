@@ -1,4 +1,4 @@
-package Back_end.BW2;
+package Back_end.BW2.runners;
 
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.services.ComuneService;
@@ -23,8 +23,8 @@ public class MyRunner implements CommandLineRunner {
 
 
         try {
-            File provinciaFile = new ClassPathResource("allgaticsv/province-italiane.csv").getFile();
-            File comuniFile = new ClassPathResource("allgaticsv/comuni-italiani.csv").getFile();
+            File provinciaFile = new ClassPathResource("allegaticsv/province-italiane.csv").getFile();
+            File comuniFile = new ClassPathResource("allegaticsv/comuni-italiani.csv").getFile();
 
             provinciaService.importProvinceCSV(provinciaFile.getAbsolutePath());
             comuneService.importComuniCSV(comuniFile.getAbsolutePath());

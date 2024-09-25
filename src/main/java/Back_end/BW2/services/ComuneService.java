@@ -36,7 +36,7 @@ public class ComuneService {
 
                 Provincia provinciaAssociazione;
 
-                provinciaAssociazione = (Provincia) provinciaRepository.findByNome(riga[3]);
+                provinciaAssociazione = provinciaRepository.findByNome(riga[3]);
 
 
                 comune.setProvincia(provinciaAssociazione);
