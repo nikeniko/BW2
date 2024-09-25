@@ -54,7 +54,7 @@ public class ClientiService {
         found.setCognomeContatto(newUserData.cognomeContatto());
         found.setLogoAziendale(newUserData.logoAziendale());
 
-        return new ClienteDTO(this.clientiRepository.save(found).getId());
+        return new ClienteRespDTO(this.clientiRepository.save(found).getId());
     }
 
     // 4 --> DELETE

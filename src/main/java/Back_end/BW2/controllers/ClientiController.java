@@ -2,6 +2,7 @@ package Back_end.BW2.controllers;
 
 import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.payloads.ClienteDTO;
+import Back_end.BW2.payloads.ClienteRespDTO;
 import Back_end.BW2.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,9 +43,10 @@ public class ClientiController {
 
     // 4 --> PUT
 
+    @PutMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ClienteDTO findIdAndUpdateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO body) {
-        return this.clientiService.findIdCliente(clienteId, body);
+    public ClienteRespDTO findIdAndUpdateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO body) {
+        return this.clientiService.findIdAndUpdateClienti(clienteId, body);
     }
 
     // 5 --> DELETE
