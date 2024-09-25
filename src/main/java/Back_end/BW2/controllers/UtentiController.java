@@ -72,7 +72,7 @@ public class UtentiController {
     }
 
 
-    // FATTURA
+    // CLOUDINARY
 
     // UPLOAD IMMAGINE
     @PostMapping("/{utenteId}/avatar")

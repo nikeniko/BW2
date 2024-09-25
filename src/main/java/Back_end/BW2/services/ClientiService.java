@@ -8,6 +8,8 @@ import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.payloads.ClienteRespDTO;
 import Back_end.BW2.repositories.ClientiRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +18,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -31,6 +35,8 @@ public class ClientiService {
     @Autowired
     private IndirizzoService indirizzoService;
 
+    @Autowired
+    private Cloudinary cloudinary;
 
     // METODI
 
@@ -101,6 +107,16 @@ public class ClientiService {
         newCliente.setLogoAziendale(("https://ui-avatars.com/api/?name=" + body.nomeContatto() + body.cognomeContatto()));
 
         return this.clientiRepository.save(newCliente);
+    }
+
+    // upload immagine
+    public Cliente uploadImagine(MultipartFile file, UUID clienteId) throws IOException {
+        Cliente trovato = this.findIdCliente(clienteId);
+        String url = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+
+        trovato.setLogoAziendale(url);
+
+        return clientiRepository.save(trovato);
     }
 
 

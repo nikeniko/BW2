@@ -15,7 +15,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -101,4 +103,15 @@ public class ClientiController {
         }
     }
 
+    // CLOUDINARY
+
+    // UPLOAD IMMAGINE
+    @PostMapping("/{clienteId}/avatar")
+    public Cliente uploadImage(@RequestParam("avatar") MultipartFile img, @PathVariable UUID clienteId) throws IOException {
+        try {
+            return this.clientiService.uploadImagine(img, clienteId);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

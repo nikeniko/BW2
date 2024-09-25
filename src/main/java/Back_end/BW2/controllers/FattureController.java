@@ -81,4 +81,5 @@ public class FattureController {
         this.fattureService.findIdFattureAndDelete(fattureId);
     }
 
+
 }

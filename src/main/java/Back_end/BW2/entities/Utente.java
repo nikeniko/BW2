@@ -42,8 +42,11 @@ public class Utente implements UserDetails {
     @JsonIgnore
     private List<Cliente> clientiList;
 
-//    @ManyToMany(mappedBy = "utenteList")
-//    private List<Ruolo> ruoli;
+    @ManyToMany
+    @JoinTable(name = "ruoli_utenti",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
+    private List<Ruolo> ruoli;
 
     public Utente(String username, String email, String password, String nome, String cognome, String avatar,
                   RuoloUtente ruoloUtente) {
@@ -75,5 +78,15 @@ public class Utente implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public void aggiungiRuolo(Ruolo ruolo) {
+        ruoli.add(ruolo);
+        ruolo.getUtenteList().add(this); // mantiene sincronizzata la relazione bidirezionale
+    }
+
+    public void rimuoviRuolo(Ruolo ruolo) {
+        ruoli.remove(ruolo);
+        ruolo.getUtenteList().remove(this); // mantiene sincronizzata la relazione bidirezionale
     }
 }
