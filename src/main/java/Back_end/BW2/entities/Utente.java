@@ -40,7 +40,11 @@ public class Utente implements UserDetails {
     @OneToMany(mappedBy = "utenteId")
     private List<Cliente> clientiList;
 
-    public Utente(String username, String email, String password, String nome, String cognome, String avatar, RuoloUtente ruoloUtente) {
+    @ManyToMany(mappedBy = "utenteList")
+    private List<Ruolo> ruoli;
+
+    public Utente(String username, String email, String password, String nome, String cognome, String avatar,
+                  RuoloUtente ruoloUtente) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -48,6 +52,18 @@ public class Utente implements UserDetails {
         this.cognome = cognome;
         this.avatar = avatar;
         this.ruoloUtente = ruoloUtente;
+    }
+
+    public Utente(String username, String email, String password, String nome, String cognome, String avatar,
+                  RuoloUtente ruoloUtente, List<Ruolo> ruoli) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.avatar = avatar;
+        this.ruoloUtente = ruoloUtente;
+        this.ruoli = ruoli;
     }
 
     @Override
