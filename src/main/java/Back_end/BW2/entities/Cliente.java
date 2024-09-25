@@ -25,15 +25,15 @@ public class Cliente {
     @Column(name = "ragione_sociale")
     private String ragioneSociale;
     @Column(name = "partita_iva")
-    private long partitaIva;
+    private String partitaIva;
     @Column(name = "data_inserimento")
     private LocalDate dataInserimento;
     @Column(name = "data_ultimo_contatto")
     private LocalDate dataUltimoContatto;
     @Column(name = "fatturato_annuale")
-    private long fatturatoAnnuale;
+    private int fatturatoAnnuale;
     private String pec;
-    private long telefono;
+    private int telefono;
     @Column(name = "email_contatto")
     private String emailContatto;
     @Column(name = "nome_contatto")
@@ -54,14 +54,14 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Fattura> fattureList;
 
-    @OneToOne
+    @ManyToOne
     private Indirizzo indirizzoSedeLegale;
 
-    @OneToOne
+    @ManyToOne
     private Indirizzo indirizzoSedeOperativa;
 
-    public Cliente(String ragioneSociale, long partitaIva, LocalDate dataInserimento, LocalDate dataUltimoContatto,
-                   long fatturatoAnnuale, String pec, long telefono, String emailContatto, String nomeContatto,
+    public Cliente(String ragioneSociale, String partitaIva, LocalDate dataInserimento, LocalDate dataUltimoContatto,
+                   int fatturatoAnnuale, String pec, int telefono, String emailContatto, String nomeContatto,
                    String cognomeContatto, TipoAzienda tipoAzienda, Utente utenteId, Indirizzo indirizzoSedeLegale,
                    Indirizzo indirizzoSedeOperativa, String logoAziendale) {
         this.ragioneSociale = ragioneSociale;

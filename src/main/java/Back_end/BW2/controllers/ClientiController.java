@@ -27,7 +27,7 @@ public class ClientiController {
 
     // 1 --> GET ALL
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','UTENTE')")
     public Page<Cliente> findAllClienti(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "10") int size,
                                         @RequestParam(defaultValue = "id") String sortBy) {
@@ -36,6 +36,7 @@ public class ClientiController {
 
     // 2 --> POST
     @PostMapping("/crea")
+    @PreAuthorize("hasAnyAuthority('ADMIN','UTENTE')")
     @ResponseStatus(HttpStatus.CREATED)
     public ClienteRespDTO saveCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
@@ -54,7 +55,7 @@ public class ClientiController {
     // 3 --> GET ID
 
     @GetMapping("/{clienteId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','UTENTE')")
     public Cliente findIdCliente(@PathVariable UUID clienteId) {
         return this.clientiService.findIdCliente(clienteId);
     }

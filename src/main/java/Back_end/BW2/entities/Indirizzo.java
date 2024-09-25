@@ -1,8 +1,10 @@
 package Back_end.BW2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,8 +27,22 @@ public class Indirizzo {
     private String cap;
 
     @ManyToOne
+    @JoinColumn(name = "comune")
     private Comune comune;
 
-    @ManyToOne
-    private Cliente cliente;
+    @OneToMany(mappedBy = "indirizzoSedeLegale")
+    @JsonIgnore
+    private List<Cliente> clienteListSedeLegale;
+
+    @OneToMany(mappedBy = "indirizzoSedeOperativa")
+    @JsonIgnore
+    private List<Cliente> clienteListSedeOperativa;
+
+    public Indirizzo(String via, String civico, String localita, String cap, Comune comune) {
+        this.via = via;
+        this.civico = civico;
+        this.localita = localita;
+        this.cap = cap;
+        this.comune = comune;
+    }
 }

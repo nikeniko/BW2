@@ -1,6 +1,9 @@
 package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Cliente;
+import Back_end.BW2.entities.Indirizzo;
+import Back_end.BW2.entities.Utente;
+import Back_end.BW2.enums.TipoAzienda;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.payloads.ClienteRespDTO;
@@ -10,8 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -21,6 +27,10 @@ public class ClientiService {
 
     @Autowired
     private ClientiRepository clientiRepository;
+
+    @Autowired
+    private IndirizzoService indirizzoService;
+
 
     // METODI
 
@@ -45,10 +55,10 @@ public class ClientiService {
         Cliente found = this.findIdCliente(clientiId);
         found.setRagioneSociale(newUserData.ragioneSociale());
         found.setPartitaIva(newUserData.partitaIva());
-        found.setDataInserimento(newUserData.dataInserimento());
-        found.setDataUltimoContatto(newUserData.dataUltimoContatto());
-        found.setFatturatoAnnuale(newUserData.fatturatoAnnuale());
-        found.setTelefono(newUserData.telefono());
+        found.setDataInserimento(LocalDate.parse(newUserData.dataInserimento()));
+        found.setDataUltimoContatto(LocalDate.parse(newUserData.dataUltimoContatto()));
+        found.setFatturatoAnnuale(Integer.parseInt(newUserData.fatturatoAnnuale()));
+        found.setTelefono(Integer.parseInt(newUserData.telefono()));
         found.setEmailContatto(newUserData.emailContatto());
         found.setNomeContatto(newUserData.nomeContatto());
         found.setCognomeContatto(newUserData.cognomeContatto());
@@ -67,17 +77,27 @@ public class ClientiService {
     // 5 --> SAVE
 
     public Cliente save(ClienteDTO body) {
+        Indirizzo indirizzoSedeLegale = this.indirizzoService.findIdIndirizzo(UUID.fromString(body.indirizzoSedeLegale()));
+        Indirizzo indirizzoSedeOperativa = this.indirizzoService.findIdIndirizzo(UUID.fromString(body.indirizzoSedeOperativa()));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Utente utente = (Utente) authentication.getPrincipal();
+
         Cliente newCliente = new Cliente();
         newCliente.setRagioneSociale(body.ragioneSociale());
         newCliente.setPartitaIva(body.partitaIva());
-        newCliente.setDataInserimento(body.dataInserimento());
-        newCliente.setDataUltimoContatto(body.dataUltimoContatto());
-        newCliente.setFatturatoAnnuale(body.fatturatoAnnuale());
+        newCliente.setDataInserimento(LocalDate.parse(body.dataInserimento()));
+        newCliente.setDataUltimoContatto(LocalDate.parse(body.dataUltimoContatto()));
+        newCliente.setFatturatoAnnuale(Integer.parseInt(body.fatturatoAnnuale()));
         newCliente.setPec(body.pec());
-        newCliente.setTelefono(body.telefono());
+        newCliente.setTelefono(Integer.parseInt(body.telefono()));
         newCliente.setEmailContatto(body.emailContatto());
         newCliente.setNomeContatto(body.nomeContatto());
         newCliente.setCognomeContatto(body.cognomeContatto());
+        newCliente.setTipoAzienda(TipoAzienda.valueOf(body.tipoAzienda()));
+        newCliente.setIndirizzoSedeLegale(indirizzoSedeLegale);
+        newCliente.setIndirizzoSedeOperativa(indirizzoSedeOperativa);
+        newCliente.setUtenteId(utente);
         newCliente.setLogoAziendale(("https://ui-avatars.com/api/?name=" + body.nomeContatto() + body.cognomeContatto()));
 
         return this.clientiRepository.save(newCliente);

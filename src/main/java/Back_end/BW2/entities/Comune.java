@@ -1,8 +1,10 @@
 package Back_end.BW2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +28,10 @@ public class Comune {
     @ManyToOne
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
+
+    @OneToMany(mappedBy = "comune")
+    @JsonIgnore
+    private List<Indirizzo> indirizzoList;
 
 
 }

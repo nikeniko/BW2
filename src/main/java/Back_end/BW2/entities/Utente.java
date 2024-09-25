@@ -1,6 +1,7 @@
 package Back_end.BW2.entities;
 
 import Back_end.BW2.enums.RuoloUtente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -38,6 +39,7 @@ public class Utente implements UserDetails {
     private RuoloUtente ruoloUtente;
 
     @OneToMany(mappedBy = "utenteId")
+    @JsonIgnore
     private List<Cliente> clientiList;
 
 //    @ManyToMany(mappedBy = "utenteList")
