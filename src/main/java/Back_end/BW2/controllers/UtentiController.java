@@ -62,5 +62,5 @@ public class UtentiController {
         return this.utentiService.findByIdAndUpdate(utenteCorrenteAutenticato.getId(), body);
     }
 
-    
+
 }
