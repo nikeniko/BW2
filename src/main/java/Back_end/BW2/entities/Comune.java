@@ -15,8 +15,9 @@ import java.util.UUID;
 public class Comune {
 
     @Id
-    @GeneratedValue
     @Setter(AccessLevel.NONE)
+    @GeneratedValue
+
     private UUID id;
     private String nome;
     @ManyToOne

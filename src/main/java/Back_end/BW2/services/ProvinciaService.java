@@ -33,7 +33,6 @@ public class ProvinciaService {
                     province.add(provincia);
                 }
             }
-
             provinciaRepository.saveAll(province);
         } catch (Exception e) {
             e.printStackTrace();
