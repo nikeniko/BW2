@@ -2,10 +2,7 @@ package Back_end.BW2.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -19,12 +16,14 @@ public class Comune {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID id;
     private String nome;
     @ManyToOne
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
 
-
-
+    public Comune(String nome) {
+        this.nome = nome;
+    }
 }

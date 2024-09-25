@@ -1,16 +1,16 @@
 package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Comune;
-import Back_end.BW2.entities.Provincia;
-import Back_end.BW2.repositories.*;
+import Back_end.BW2.repositories.ComuneRepository;
+import Back_end.BW2.repositories.ProvinciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComuneService {
@@ -22,27 +22,25 @@ public class ComuneService {
     private ProvinciaRepository provinciaRepository;
 
 
-    public void importComuniCSV(String filePath) {
+    public List<Comune> leggiComuniDaCSV(String filePath) {
         List<Comune> comuni = new ArrayList<>();
+        String line;
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            br.readLine();
-
             while ((line = br.readLine()) != null) {
-                String[] riga = line.split(";");
+                String[] valori = line.split(";");
+                int id = Integer.parseInt(valori[0]);   // ID del comune
+                String nome = valori[1];                // Nome del comune
+                String provincia = valori[2];           // Nome della provincia
 
-                Comune comune = new Comune();
-                comune.setNome(riga[2]);
-                Optional<Provincia> provinciaAssociazione = Optional.ofNullable(provinciaRepository.findByNome(riga[3]));
-                provinciaAssociazione.ifPresent(comune::setProvincia);
-
+                // Crea un nuovo oggetto Comune e aggiungilo alla lista
+                Comune comune = new Comune(nome);
                 comuni.add(comune);
             }
-
-            comuneRepository.saveAll(comuni);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return comuni;
     }
 }

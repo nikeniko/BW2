@@ -15,8 +15,8 @@ import java.util.UUID;
 
 public class Indirizzo {
     @Id
-    @Setter(AccessLevel.NONE)
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     UUID id;
 
     private String via;

@@ -2,10 +2,7 @@ package Back_end.BW2.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -19,7 +16,7 @@ public class Provincia {
 
     @Id
     @GeneratedValue
-
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     private String nome;
