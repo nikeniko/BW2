@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComuneService {
@@ -29,18 +28,15 @@ public class ComuneService {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             br.readLine();
-
             while ((line = br.readLine()) != null) {
                 String[] riga = line.split(";");
 
                 Comune comune = new Comune();
                 comune.setNome(riga[2]);
-                Optional<Provincia> provinciaAssociazione = Optional.ofNullable(provinciaRepository.findByNome(riga[3]));
-                if (provinciaAssociazione.isPresent()) {
-                    comune.setProvincia(provinciaAssociazione.get());
+                List<Provincia> provinciaAssociazione = provinciaRepository.findByNome(riga[3]);
+                if (provinciaAssociazione != null) {
+                    comune.setProvincia(provinciaAssociazione.getFirst());
                 }
-
-
                 comuni.add(comune);
             }
 

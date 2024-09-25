@@ -4,6 +4,12 @@ import Back_end.BW2.entities.Comune;
 import Back_end.BW2.entities.Provincia;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ComuneRepository extends JpaRepository<Comune, Long> {
+import java.util.List;
+import java.util.UUID;
+
+public interface ComuneRepository extends JpaRepository<Comune, UUID> {
+
+    List<Comune> findByNome(String nome);
+
     Comune findByNomeAndProvincia(String nome, Provincia provincia);
 }
