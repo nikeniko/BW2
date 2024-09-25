@@ -1,11 +1,11 @@
 package Back_end.BW2.controllers;
 
 import Back_end.BW2.entities.Cliente;
-import Back_end.BW2.payloads.NewFatturaDTO;
-import Back_end.BW2.payloads.NewFatturaRespDTO;
+import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class ClientiController {
 
     // 3 --> GET ID
 
-    @GetMapping("/{fattureId}")
+    @GetMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Cliente findIdCliente(@PathVariable UUID clienteId) {
         return this.clientiService.findIdCliente(clienteId);
@@ -43,10 +43,17 @@ public class ClientiController {
     // 4 --> PUT
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    public NewFatturaRespDTO findIdAndUpdateCliente(@PathVariable UUID clienteId, @RequestBody @Validated NewFatturaDTO body) {
-        return this.clientiService.findIdAndUpdateCliente(clienteId, body);
+    public ClienteDTO findIdAndUpdateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO body) {
+        return this.clientiService.findIdCliente(clienteId, body);
     }
 
     // 5 --> DELETE
+
+    @DeleteMapping("/{clienteId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void findIdClienteAndDelete(@PathVariable UUID clienteId) {
+        this.clientiService.findIdClienteAndDelete(clienteId);
+    }
 
 }
