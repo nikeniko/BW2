@@ -1,8 +1,13 @@
 package Back_end.BW2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,9 +27,9 @@ public class Provincia {
     private String sigla;
     private String regione;
 
-    @ManyToOne
-    @JoinColumn(name = "comune_id", referencedColumnName = "id")
-    private Comune comune;
+    @JsonIgnore
+    @OneToMany(mappedBy = "provincia")
+    private List<Comune> comune;
 
 
 }

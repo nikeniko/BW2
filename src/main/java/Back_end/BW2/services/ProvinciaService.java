@@ -25,13 +25,36 @@ public class ProvinciaService {
             while ((riga = reader.readLine()) != null) {
                 String[] casella = riga.split(";");
 
-                if (casella.length >= 3) {
-                    Provincia provincia = new Provincia();
-                    provincia.setSigla(casella[0]);
-                    provincia.setNome(casella[1]);
-                    provincia.setRegione(casella[2]);
+                switch (casella[1]) {
+                    case "Verbania" -> casella[1] = "Verbano-Cusio-Ossola";
+                    case "Aosta" -> casella[1] = "Valle d'Aosta/Vallée d'Aoste";
+                    case "Monza-Brianza" -> casella[1] = "Monza e della Brianza";
+                    case "Bolzano" -> casella[1] = "Bolzano/Bozen";
+                    case "La-Spezia" -> casella[1] = "La Spezia";
+                    case "Reggio-Emilia" -> casella[1] = "Reggio nell'Emilia";
+                    case "Forli-Cesena" -> casella[1] = "Forlì-Cesena";
+                    case "Pesaro-Urbino" -> casella[1] = "Pesaro e Urbino";
+                    case "Ascoli-Piceno" -> casella[1] = "Ascoli Piceno";
+                    case "Reggio-Calabria" -> casella[1] = "Reggio Calabria";
+                    case "Vibo-Valentia" -> casella[1] = "Vibo Valentia";
+                    case "Carbonia Iglesias", "Medio Campidano" -> casella[1] = "Sud Sardegna";
+                    case "Olbia Tempio" -> casella[1] = "Sassari";
+                    case "Ogliastra" -> casella[1] = "Nuoro";
+                }
+
+
+                Provincia provincia = new Provincia();
+                provincia.setSigla(casella[0]);
+                provincia.setNome(casella[1]);
+                provincia.setRegione(casella[2]);
+
+                if (province.stream().anyMatch(obj -> obj.getNome().equals(provincia.getNome()))) {
+                    System.out.println(provincia.getNome() + " esiste gia");
+                } else {
                     province.add(provincia);
                 }
+
+
             }
             provinciaRepository.saveAll(province);
         } catch (Exception e) {

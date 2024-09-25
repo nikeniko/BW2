@@ -1,25 +1,27 @@
-package Back_end.BW2.controllers;
+package Back_end.BW2;
 
+import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.services.ComuneService;
 import Back_end.BW2.services.ProvinciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
-@RestController
-@RequestMapping("/importData")
-public class CSVController {
-
+@Component
+public class MyRunner implements CommandLineRunner {
     @Autowired
     private ProvinciaService provinciaService;
 
     @Autowired
     private ComuneService comuneService;
 
-    @PostMapping()
-    public String importCSVFiles() {
+    @Override
+    public void run(String... args) throws Exception {
+
+
         try {
             File provinciaFile = new ClassPathResource("allgaticsv/province-italiane.csv").getFile();
             File comuniFile = new ClassPathResource("allgaticsv/comuni-italiani.csv").getFile();
@@ -27,9 +29,9 @@ public class CSVController {
             provinciaService.importProvinceCSV(provinciaFile.getAbsolutePath());
             comuneService.importComuniCSV(comuniFile.getAbsolutePath());
 
-            return "L'import dei Dati di Province and Comuni è andato a buon fine!";
+
         } catch (Exception e) {
-            return "Errore nell'import dai file CSV: " + e.getMessage();
+            throw new NotFoundException("Errore nell'import dai file CSV: " + e.getMessage());
         }
     }
 }

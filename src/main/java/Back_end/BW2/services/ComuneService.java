@@ -2,7 +2,8 @@ package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Comune;
 import Back_end.BW2.entities.Provincia;
-import Back_end.BW2.repositories.*;
+import Back_end.BW2.repositories.ComuneRepository;
+import Back_end.BW2.repositories.ProvinciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ComuneService {
@@ -34,10 +34,12 @@ public class ComuneService {
 
                 Comune comune = new Comune();
                 comune.setNome(riga[2]);
-                Optional<Provincia> provinciaAssociazione = Optional.ofNullable(provinciaRepository.findByNome(riga[3]));
-                if (provinciaAssociazione.isPresent()) {
-                    comune.setProvincia(provinciaAssociazione.get());
-                }
+                Provincia provinciaAssociazione;
+//
+                provinciaAssociazione = provinciaRepository.findByNome(riga[3]);
+
+
+                comune.setProvincia(provinciaAssociazione);
 
 
                 comuni.add(comune);

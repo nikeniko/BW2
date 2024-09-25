@@ -21,10 +21,10 @@ public class Comune {
     @GeneratedValue(strategy = GenerationType.AUTO) // o strategy = GenerationType.IDENTITY
     private UUID id;
     private String nome;
+
     @ManyToOne
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
-
 
 
 }
