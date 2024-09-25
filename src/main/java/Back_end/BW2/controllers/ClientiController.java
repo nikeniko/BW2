@@ -4,7 +4,10 @@ import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.payloads.ClienteRespDTO;
+import Back_end.BW2.payloads.NewFatturaDTO;
+import Back_end.BW2.payloads.NewFatturaRespDTO;
 import Back_end.BW2.services.ClientiService;
+import Back_end.BW2.services.FattureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,9 @@ public class ClientiController {
 
     @Autowired
     private ClientiService clientiService;
+
+    @Autowired
+    private FattureService fattureService;
 
     // 1 --> GET ALL
     @GetMapping
@@ -75,6 +81,24 @@ public class ClientiController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findIdClienteAndDelete(@PathVariable UUID clienteId) {
         this.clientiService.findIdClienteAndDelete(clienteId);
+    }
+
+    // 2 --> POST
+
+    @PostMapping("/fatture/crea")
+    @PreAuthorize("hasAnyAuthority('UTENTE','ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public NewFatturaRespDTO save(@RequestBody @Validated NewFatturaDTO body, BindingResult validationResult) {
+
+        if (validationResult.hasErrors()) {
+            String messages = validationResult.getAllErrors().stream()
+                    .map(objectError -> objectError.getDefaultMessage())
+                    .collect(Collectors.joining(". "));
+
+            throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
+        } else {
+            return new NewFatturaRespDTO(this.fattureService.save(body).getId());
+        }
     }
 
 }

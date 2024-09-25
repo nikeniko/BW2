@@ -40,7 +40,7 @@ public class FattureController {
     // 2 --> POST
 
     @PostMapping("/crea")
-    @PreAuthorize("hasAnyAuthority('CLIENTE','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('UTENTE','ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public NewFatturaRespDTO save(@RequestBody @Validated NewFatturaDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
@@ -59,13 +59,14 @@ public class FattureController {
     // 3 --> GET ID
 
     @GetMapping("/{fattureId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('UTENTE','ADMIN')")
     public Fattura findIdFatture(@PathVariable UUID fattureId) {
         return this.fattureService.findIdFatture(fattureId);
     }
 
 
     // 4 --> PUT
+    @PutMapping("/{fattureId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public NewFatturaRespDTO findIdAndUpdateFatture(@PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {
         return this.fattureService.findIdAndUpdateFatture(fattureId, body);

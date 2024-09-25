@@ -48,8 +48,7 @@ public class FattureService {
 
     public NewFatturaRespDTO findIdAndUpdateFatture(UUID fattureId, NewFatturaDTO newUserData) {
         Fattura found = this.findIdFatture(fattureId);
-        found.setData(newUserData.data());
-        found.setImporto(newUserData.importo());
+        found.setImporto(Double.parseDouble(newUserData.importo()));
         found.setNumeroFattura(newUserData.numeroFattura());
         found.setStatoFatture(StatoFatture.valueOf(newUserData.statoFatture()));
         return new NewFatturaRespDTO(this.fattureRepository.save(found).getId());
@@ -67,7 +66,7 @@ public class FattureService {
     public Fattura save(NewFatturaDTO body) {
         Cliente foundCliente = this.clientiRepository.findById(UUID.fromString(body.cliente())).orElseThrow(() -> new NotFoundException(UUID.fromString(body.cliente())));
         StatoFatture statoFatture = StatoFatture.valueOf(body.statoFatture());
-        Fattura newFattura = new Fattura(body.data(), body.importo(), body.numeroFattura(), statoFatture, foundCliente);
+        Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), body.numeroFattura(), statoFatture, foundCliente);
 
         return this.fattureRepository.save(newFattura);
     }
