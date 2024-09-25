@@ -51,7 +51,7 @@ public class Cliente {
     private Utente utenteId;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "clienteId")
+    @OneToMany(mappedBy = "cliente")
     private List<Fattura> fattureList;
 
     @OneToOne
