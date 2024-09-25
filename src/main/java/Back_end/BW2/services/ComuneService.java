@@ -33,10 +33,15 @@ public class ComuneService {
 
                 Comune comune = new Comune();
                 comune.setNome(riga[2]);
-                List<Provincia> provinciaAssociazione = provinciaRepository.findByNome(riga[3]);
-                if (provinciaAssociazione != null) {
-                    comune.setProvincia(provinciaAssociazione.getFirst());
-                }
+
+                Provincia provinciaAssociazione;
+
+                provinciaAssociazione = (Provincia) provinciaRepository.findByNome(riga[3]);
+
+
+                comune.setProvincia(provinciaAssociazione);
+
+
                 comuni.add(comune);
             }
 

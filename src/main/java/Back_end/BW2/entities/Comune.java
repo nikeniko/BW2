@@ -20,11 +20,14 @@ public class Comune {
 
     private UUID id;
     private String nome;
+
     @ManyToOne
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
 
+
     public Comune(String nome) {
         this.nome = nome;
     }
+
 }
