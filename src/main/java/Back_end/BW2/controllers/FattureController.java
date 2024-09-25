@@ -25,7 +25,7 @@ public class FattureController {
     @Autowired
     private FattureService fattureService;
 
-    // QUERY
+    //
 
     // 1 --> GET ALL
 
