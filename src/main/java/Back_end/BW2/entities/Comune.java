@@ -1,6 +1,5 @@
 package Back_end.BW2.entities;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +17,14 @@ import java.util.UUID;
 public class Comune {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // o strategy = GenerationType.IDENTITY
+    @GeneratedValue
     private UUID id;
+
+    private String codiceProvincia;
+    private String progressivoComune;
     private String nome;
 
     @ManyToOne
     @JoinColumn(name = "provincia_id")
     private Provincia provincia;
-
-
 }
