@@ -5,6 +5,7 @@ import Back_end.BW2.entities.Fattura;
 import Back_end.BW2.enums.StatoFatture;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.NewFatturaDTO;
+import Back_end.BW2.payloads.NewFatturaRespDTO;
 import Back_end.BW2.repositories.ClientiRepository;
 import Back_end.BW2.repositories.FattureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,13 @@ public class FattureService {
 
     // 3 --> PUT
 
-    public Fattura findIdAndUpdate(UUID fattureId, Fattura newUserData) {
+    public NewFatturaRespDTO findIdAndUpdateFatture(UUID fattureId, NewFatturaDTO newUserData) {
         Fattura found = this.findIdFatture(fattureId);
-        found.setData(newUserData.getData());
-        found.setImporto(newUserData.getImporto());
-        found.setNumeroFattura(newUserData.getNumeroFattura());
-        found.setStatoFatture(newUserData.getStatoFatture());
-        return this.fattureRepository.save(found);
+        found.setData(newUserData.data());
+        found.setImporto(newUserData.importo());
+        found.setNumeroFattura(newUserData.numeroFattura());
+        found.setStatoFatture(StatoFatture.valueOf(newUserData.statoFatture()));
+        return new NewFatturaRespDTO(this.fattureRepository.save(found).getId());
     }
 
     // 4 --> DELETE

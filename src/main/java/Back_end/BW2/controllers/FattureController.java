@@ -67,8 +67,8 @@ public class FattureController {
 
     // 4 --> PUT
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Fattura findIdAndUpdate(@PathVariable UUID fattureId, @RequestBody Fattura body) {
-        return this.fattureService.findIdAndUpdate(fattureId, body);
+    public NewFatturaRespDTO findIdAndUpdateFatture(@PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {
+        return this.fattureService.findIdAndUpdateFatture(fattureId, body);
     }
 
     // 5 --> DELETE

@@ -14,7 +14,7 @@ public record NewFatturaDTO(
         @Size(min = 2, max = 9, message = "L'importo deve essere compreso tra 2 e 9 caratteri")
         double importo,
         @NotEmpty(message = "Inserire lo stato della fattura")
-        @Size(min = 5, message = "Deve avere almeno 5 caratteri")
+        @Size(min = 5, message = "Deve avere almeno di 5 caratteri")
         String statoFatture,
         @NotEmpty(message = "Inserire il cliente per la fattura")
         @Size(min = 5, message = "Deve avere almeno 5 caratteri")

@@ -1,8 +1,12 @@
 package Back_end.BW2.controllers;
 
+import Back_end.BW2.entities.Fattura;
 import Back_end.BW2.entities.Utente;
+import Back_end.BW2.payloads.NewFatturaDTO;
+import Back_end.BW2.payloads.NewFatturaRespDTO;
 import Back_end.BW2.payloads.UtenteDTO;
 import Back_end.BW2.payloads.UtenteRespDTO;
+import Back_end.BW2.services.FattureService;
 import Back_end.BW2.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,9 @@ public class UtentiController {
 
     @Autowired
     private UtentiService utentiService;
+
+    @Autowired
+    private FattureService fattureService;
 
     @GetMapping("/{utenteId}")
     public Utente getById(@PathVariable UUID utenteId) {
@@ -62,5 +69,21 @@ public class UtentiController {
         return this.utentiService.findByIdAndUpdate(utenteCorrenteAutenticato.getId(), body);
     }
 
+    // FATTURA
 
+    @GetMapping("/me/fatture")
+    public Fattura getFattura(@AuthenticationPrincipal Fattura fatturaCorrente) {
+        return fatturaCorrente;
+    }
+
+    @DeleteMapping("/me/fatture/{fattureId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId) {           //todo VALUTARE
+        this.fattureService.findIdFatture(fatturaCorrente.getId());
+    }
+
+    @PutMapping("/me/fatture/{fattureId}")
+    public NewFatturaRespDTO updateFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {  //todo VALUTARE
+        return this.fattureService.findIdAndUpdateFatture(fatturaCorrente.getId(), body);
+    }
 }
