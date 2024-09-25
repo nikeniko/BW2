@@ -1,10 +1,10 @@
 package Back_end.BW2.controllers;
 
-import Back_end.BW2.entities.Fattura;
+import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.exceptions.BadRequestException;
-import Back_end.BW2.payloads.NewFatturaDTO;
-import Back_end.BW2.payloads.NewFatturaRespDTO;
-import Back_end.BW2.services.FattureService;
+import Back_end.BW2.payloads.ClienteDTO;
+import Back_end.BW2.payloads.ClienteRespDTO;
+import Back_end.BW2.services.ClientiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,32 +17,27 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/fatture")
-public class FattureController {
+@RequestMapping("/clienti")
+public class ClientiController {
 
     // IMPORTI
 
     @Autowired
-    private FattureService fattureService;
-
-    //
+    private ClientiService clientiService;
 
     // 1 --> GET ALL
-
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Fattura> findAllFatture(@RequestParam(defaultValue = "0") int page,
+    public Page<Cliente> findAllClienti(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "10") int size,
                                         @RequestParam(defaultValue = "id") String sortBy) {
-        return this.fattureService.findAllFatture(page, size, sortBy);
+        return this.clientiService.findAllClienti(page, size, sortBy);
     }
 
     // 2 --> POST
-
     @PostMapping("/crea")
-    @PreAuthorize("hasAnyAuthority('CLIENTE','ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public NewFatturaRespDTO save(@RequestBody @Validated NewFatturaDTO body, BindingResult validationResult) {
+    public ClienteRespDTO saveCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()
                     .map(objectError -> objectError.getDefaultMessage())
@@ -52,32 +47,33 @@ public class FattureController {
         } else {
 
 
-            return new NewFatturaRespDTO(this.fattureService.save(body).getId());
+            return new ClienteRespDTO(this.clientiService.save(body).getId());
         }
     }
 
     // 3 --> GET ID
 
-    @GetMapping("/{fattureId}")
+    @GetMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Fattura findIdFatture(@PathVariable UUID fattureId) {
-        return this.fattureService.findIdFatture(fattureId);
+    public Cliente findIdCliente(@PathVariable UUID clienteId) {
+        return this.clientiService.findIdCliente(clienteId);
     }
 
-
     // 4 --> PUT
+
+    @PutMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public NewFatturaRespDTO findIdAndUpdateFatture(@PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {
-        return this.fattureService.findIdAndUpdateFatture(fattureId, body);
+    public ClienteRespDTO findIdAndUpdateCliente(@PathVariable UUID clienteId, @RequestBody @Validated ClienteDTO body) {
+        return this.clientiService.findIdAndUpdateClienti(clienteId, body);
     }
 
     // 5 --> DELETE
 
-    @DeleteMapping("/{fattureId}")
+    @DeleteMapping("/{clienteId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findIdFattureAndDelete(@PathVariable UUID fattureId) {
-        this.fattureService.findIdFattureAndDelete(fattureId);
+    public void findIdClienteAndDelete(@PathVariable UUID clienteId) {
+        this.clientiService.findIdClienteAndDelete(clienteId);
     }
 
 }
