@@ -29,16 +29,16 @@ public record ClienteDTO(@NotEmpty(message = "Devi inserire la ragione sociale")
                          @Size(min = 9, max = 9, message = "Il numero di telefono deve essere di 9 cifre")
                          long telefono,
                          @NotEmpty(message = "Inserisci l'email")
-                         @Size(min = 9, max = 18, message = "L'email deve essere compresa tra 9 e 18 caratteri")
+                         @Email(message = "Inserire una email valida")
                          String emailContatto,
                          @NotEmpty(message = "Inserisci il nome")
                          @Size(min = 3, max = 12, message = "Il nome deve essere compreso tra 3 e 12 caratteri")
                          String nomeContatto,
                          @NotEmpty(message = "Inserisci il cognome")
                          @Size(min = 3, max = 12, message = "Il cognome deve essere compreso tra 3 e 12 caratteri")
-                         String cognomeContatto,
-                         @NotEmpty(message = "Inserisci il Logo aziendale")
-                         @Size(min = 3, max = 54, message = "Il logo aziendale deve essere compreso tra 3 e 14 caratteri")
-                         String logoAziendale
+                         String cognomeContatto
+//                         @NotEmpty(message = "Inserisci il Logo aziendale")
+//                         @Size(min = 3, max = 54, message = "Il logo aziendale deve essere compreso tra 3 e 14 caratteri")
+//                         String logoAziendale
 ) {
 }

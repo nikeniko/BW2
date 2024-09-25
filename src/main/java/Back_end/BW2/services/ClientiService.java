@@ -52,7 +52,7 @@ public class ClientiService {
         found.setEmailContatto(newUserData.emailContatto());
         found.setNomeContatto(newUserData.nomeContatto());
         found.setCognomeContatto(newUserData.cognomeContatto());
-        found.setLogoAziendale(newUserData.logoAziendale());
+//        found.setLogoAziendale(newUserData.logoAziendale());
 
         return new ClienteRespDTO(this.clientiRepository.save(found).getId());
     }
