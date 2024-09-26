@@ -33,6 +33,7 @@ public class FattureService {
     @Autowired
     private StatoFattRepository statoFattRepository;
 
+
     // METODI
 
     // 1 --> GET ALL
@@ -55,7 +56,7 @@ public class FattureService {
     public NewFatturaRespDTO findIdAndUpdateFatture(UUID fattureId, NewFatturaDTO newUserData) {
         Fattura found = this.findIdFatture(fattureId);
         found.setImporto(Double.parseDouble(newUserData.importo()));
-        found.setNumeroFattura(newUserData.numeroFattura());
+//        found.setNumeroFattura(newUserData.numeroFattura());
 
         List<StatoFattura> stati = this.statoFattRepository.findAll();
 
@@ -84,15 +85,29 @@ public class FattureService {
 
     // 5 --> SAVE
 
+    // metodo per generare numeroFattura progressivo --> ho provato con GenerateValue ma non funziona
+    // trova l'ultimo e lo incrementa
+    public synchronized int generaNumeroFattura() {
+        int ultimoNumeroFattura = Math.toIntExact(fattureRepository.findMaxNumeroFattura().orElse(0L));
+        return ultimoNumeroFattura + 1;
+    }
+
     public Fattura save(NewFatturaDTO body) {
 
         Cliente foundCliente = this.clientiRepository.findById(UUID.fromString(body.cliente())).orElseThrow(() -> new NotFoundException(UUID.fromString(body.cliente())));
 
-        List<StatoFattura> stati = this.statoFattRepository.findAll();
-        //Optional<StatoFattura> stato = Optional.ofNullable(this.statoFattRepository.findFirstInList(stati));
-        StatoFattura stato = this.statoFattRepository.findFirstInList(stati);
+        StatoFattura statoFattura = this.statoFattRepository.findByStato("EMESSA")
+                .orElseGet(() -> {
+                    StatoFattura stato = new StatoFattura();
+                    stato.setStato("EMESSA");
+                    return this.statoFattRepository.save(stato);
+                });
+        //.orElseThrow(() -> new NotFoundException("Stato non trovato."));
 
-        Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), body.numeroFattura(), foundCliente, stato);
+        int numeroFattura = generaNumeroFattura();
+
+        Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), numeroFattura, foundCliente, statoFattura);
+
 
         return this.fattureRepository.save(newFattura);
     }

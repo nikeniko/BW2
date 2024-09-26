@@ -2,7 +2,10 @@ package Back_end.BW2.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
+
 public class Ruolo {
 
 
@@ -28,9 +31,5 @@ public class Ruolo {
 
     public Ruolo(String ruolo) {
         this.ruolo = ruolo;
-    }
-
-    public Ruolo getRuolo() {
-        return new Ruolo(ruolo);
     }
 }

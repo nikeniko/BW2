@@ -1,7 +1,6 @@
 package Back_end.BW2.payloads;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record NewFatturaDTO(
@@ -14,8 +13,8 @@ public record NewFatturaDTO(
         String statoFattura,
         @NotEmpty(message = "Inserire il cliente per la fattura")
         @Size(min = 5, message = "Deve avere almeno 5 caratteri")
-        String cliente,
-        @NotNull(message = "Inserisci il numero della fattura")
-        int numeroFattura
+        String cliente
+//        @NotNull(message = "Inserisci il numero della fattura")
+//        int numeroFattura
 ) {
 }

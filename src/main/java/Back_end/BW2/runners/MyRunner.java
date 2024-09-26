@@ -2,9 +2,11 @@ package Back_end.BW2.runners;
 
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.RuoloDTO;
+import Back_end.BW2.payloads.StatoFattDTO;
 import Back_end.BW2.services.ComuneService;
 import Back_end.BW2.services.ProvinciaService;
 import Back_end.BW2.services.RuoliService;
+import Back_end.BW2.services.StatoFattService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -23,6 +25,9 @@ public class MyRunner implements CommandLineRunner {
 
     @Autowired
     private RuoliService ruoliService;
+
+    @Autowired
+    private StatoFattService statoFattService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -53,6 +58,14 @@ public class MyRunner implements CommandLineRunner {
             }
         } catch (Exception e) {
             throw new NotFoundException("Errore nella creazione ruoli base: " + e.getMessage());
+        }
+
+        try {
+            if (!statoFattService.isDatabasePopulated()) {
+                statoFattService.save(new StatoFattDTO("EMESSA"));
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("Errore nella creazione stato fattura base: " + e.getMessage());
         }
     }
 }

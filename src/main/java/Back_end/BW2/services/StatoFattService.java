@@ -59,7 +59,6 @@ public class StatoFattService {
 
         }
         StatoFattura stato = new StatoFattura(body.stato().toUpperCase()); // salvo
-        stati.add(stato); // lo aggiungo alla lista degli stati disponibili
 
         return new StatoFattRespDTO(this.statoFattRepository.save(stato).getId());
     }

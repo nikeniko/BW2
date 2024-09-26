@@ -21,7 +21,7 @@ public class StatoFattura {
     private UUID id;
     private String stato;
 
-    @OneToMany(mappedBy = "statoFattura")
+    @OneToMany(mappedBy = "statoFattura", fetch = FetchType.EAGER)
     @JsonIgnore
     private List<Fattura> fatturaList;
 

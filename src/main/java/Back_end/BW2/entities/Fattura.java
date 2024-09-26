@@ -42,6 +42,14 @@ public class Fattura {
 
     // COSTRUTTORI
 
+//    public Fattura(double importo, Cliente cliente, StatoFattura statoFattura) {
+//        this.data = LocalDate.now();
+//        this.importo = importo;
+//        this.cliente = cliente;
+//        this.statoFattura = statoFattura;
+//    }
+
+
     public Fattura(double importo, int numeroFattura, Cliente cliente, StatoFattura statoFattura) {
         this.data = LocalDate.now();
         this.importo = importo;
