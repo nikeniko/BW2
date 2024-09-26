@@ -3,6 +3,7 @@ package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Ruolo;
 import Back_end.BW2.entities.Utente;
+import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.RuoloDTO;
 import Back_end.BW2.repositories.RuoloRepository;
@@ -36,6 +37,10 @@ public class RuoliService {
         return this.ruoloRepository.findAll(pageable);
     }
 
+    public Ruolo findByRuolo(String ruolo) {
+        return this.ruoloRepository.findByRuolo(ruolo).orElseThrow(() -> new NotFoundException("Il ruolo non esiste!"));
+    }
+
     public Ruolo findIdRuolo(UUID ruoloId) {
         return this.ruoloRepository.findById(ruoloId).orElseThrow(() -> new NotFoundException(ruoloId));
     }
@@ -52,15 +57,21 @@ public class RuoliService {
         if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo()))) {
             Ruolo found = ruoloRepository.findByRuolo(ruoloDTO.ruolo().toUpperCase())
                     .orElseThrow(() -> new NotFoundException(ruoloDTO.ruolo().toUpperCase()));
-            utente.aggiungiRuolo(found); //TODO CONTROLLO CHE NON ABBIA GIA IL RUOLO INSERITO
-            utentiRepository.save(utente);
-            return found;
+            if (utente.getRuoli().stream().anyMatch(ruolo1 -> ruolo1.equals(found))) {
+                throw new BadRequestException("L'utente possiede già questo ruolo!");
+            } else {
+                utente.aggiungiRuolo(found); //TODO CONTROLLO CHE NON ABBIA GIA IL RUOLO INSERITO
+                utentiRepository.save(utente);
+                return found;
+            }
+
 
         } else {
             ruolo = new Ruolo(ruoloDTO.ruolo().toUpperCase());
+            this.ruoloRepository.save(ruolo);
             utente.aggiungiRuolo(ruolo);
             utentiRepository.save(utente);
-            return this.ruoloRepository.save(ruolo);
+            return ruolo;
         }
 
     }

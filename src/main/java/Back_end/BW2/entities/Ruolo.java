@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class Ruolo {
 
     @ManyToMany(mappedBy = "ruoli")
     @JsonIgnore
-    private List<Utente> utenteList;
+    private List<Utente> utenteList = new ArrayList<>();
 
     public Ruolo(String ruolo) {
         this.ruolo = ruolo;

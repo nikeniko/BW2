@@ -5,6 +5,7 @@ import Back_end.BW2.payloads.RuoloDTO;
 import Back_end.BW2.services.ComuneService;
 import Back_end.BW2.services.ProvinciaService;
 import Back_end.BW2.services.RuoliService;
+import Back_end.BW2.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +21,9 @@ public class MyRunner implements CommandLineRunner {
 
     @Autowired
     private ComuneService comuneService;
+
+    @Autowired
+    private UtentiService utentiService;
 
     @Autowired
     private RuoliService ruoliService;
@@ -49,7 +53,13 @@ public class MyRunner implements CommandLineRunner {
 
                 ruoliService.save(new RuoloDTO("UTENTE"));
                 ruoliService.save(new RuoloDTO("ADMIN"));
-
+//                Ruolo ruoloAdmin = ruoliService.findByRuolo("ADMIN");
+//                Utente utenteAdmin = new Utente("gabrygabra", "gabrielazamfiri@gmail.com",
+//                        "1234", "Gabriel", "Azamfiri",
+//                        "https://ui-avatars.com/api/?name=Gabriel+Azamfiri");
+//
+//                utenteAdmin.aggiungiRuolo(ruoloAdmin);
+//                utentiService.save(utenteAdmin);
             }
         } catch (Exception e) {
             throw new NotFoundException("Errore nella creazione ruoli base: " + e.getMessage());

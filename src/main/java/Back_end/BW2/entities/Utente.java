@@ -43,7 +43,7 @@ public class Utente implements UserDetails {
     @JsonIgnore
     private List<Cliente> clientiList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ruoli_utenti",
             joinColumns = @JoinColumn(name = "utente_id"),
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))

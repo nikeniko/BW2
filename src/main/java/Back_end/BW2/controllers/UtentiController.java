@@ -80,6 +80,7 @@ public class UtentiController {
 
     @PostMapping("/{utenteId}/newRuolo")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Ruolo addNewRuolo(@PathVariable UUID utenteId, @RequestBody @Validated RuoloDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
             String messages = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(". "));

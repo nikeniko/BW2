@@ -54,6 +54,11 @@ public class UtentiService {
         return new UtenteRespDTO(this.utentiRepository.save(newUtente).getId());
     }
 
+    public UtenteRespDTO save(Utente body) {
+
+        return new UtenteRespDTO(this.utentiRepository.save(body).getId());
+    }
+
     // cerco tutti gli utenti
     public Page<Utente> findAll(int page, int size, String sortBy) {
         if (page > 20) page = 20;
