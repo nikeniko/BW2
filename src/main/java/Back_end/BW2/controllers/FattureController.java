@@ -86,6 +86,7 @@ public class FattureController {
     }
 
     @PostMapping("/{fatturaId}/nuovostato")
+    @PreAuthorize("hasAnyAuthority('ADMIN','UTENTE')")
     @ResponseStatus(HttpStatus.CREATED)
     public NewFatturaRespDTO creaStatoFatt(@PathVariable UUID fatturaId, @RequestBody @Validated StatoFattDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
@@ -93,7 +94,7 @@ public class FattureController {
             throw new BadRequestException(("Errori nel Payload. " + messages));
         } else {
             Fattura fattura = this.fattureService.findIdFatture(fatturaId);
-            StatoFattura statoFattura = this.statoFattService.findByStato(body.stato());
+            StatoFattura statoFattura = this.statoFattService.findByStato(body.stato().toUpperCase());
             fattura.setStatoFattura(statoFattura);
             return new NewFatturaRespDTO(this.fattureService.saveFattObj(fattura).getId());
         }

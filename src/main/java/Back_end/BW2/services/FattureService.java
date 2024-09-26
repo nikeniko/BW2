@@ -2,9 +2,7 @@ package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.entities.Fattura;
-
 import Back_end.BW2.entities.StatoFattura;
-
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.NewFatturaDTO;
@@ -19,8 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -65,21 +61,21 @@ public class FattureService {
         }
         Fattura found = this.findIdFatture(fattureId);
 
-        found.setImporto(Double.parseDouble(newUserData..importo()));
+        found.setImporto(Double.parseDouble(newUserData.importo()));
 //        found.setNumeroFattura(newUserData.numeroFattura());
 
-        List<StatoFattura> stati = this.statoFattRepository.findAll();
-
-        for (StatoFattura stato : stati) {
-
-            if (Objects.equals(stato.toString(), newUserData.statoFattura().toUpperCase())) {
-
-                throw new BadRequestException("Stato fattura già esistente.");
-            }
-        }
-        StatoFattura stato = new StatoFattura(newUserData.statoFattura().toUpperCase());
-
-        found.setStatoFattura(stato);
+//        List<StatoFattura> stati = this.statoFattRepository.findAll();
+//
+//        for (StatoFattura stato : stati) {
+//
+//            if (Objects.equals(stato.toString(), newUserData.statoFattura().toUpperCase())) {
+//
+//                throw new BadRequestException("Stato fattura già esistente.");
+//            }
+//        }
+//        StatoFattura stato = new StatoFattura(newUserData.statoFattura().toUpperCase());
+//
+//        found.setStatoFattura(stato);
 
         return new NewFatturaRespDTO(this.fattureRepository.save(found).getId());
 

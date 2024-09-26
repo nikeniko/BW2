@@ -58,17 +58,6 @@ public class Fattura {
         this.statoFattura = statoFattura;
     }
 
-    // TO STRING
-
-    @Override
-    public String toString() {
-        return "Fattura{" +
-                "id=" + id +
-                ", data=" + data +
-                ", importo=" + importo +
-                ", numeroFattura=" + numeroFattura +
-                ", cliente=" + cliente +
-                ", statoFattura=" + statoFattura +
-                '}';
-    }
 }
+
+

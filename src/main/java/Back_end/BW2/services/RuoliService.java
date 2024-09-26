@@ -47,7 +47,7 @@ public class RuoliService {
 
 
     public Ruolo save(RuoloDTO ruoloDTO) {
-        if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo()))) {
+        if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo().toUpperCase()))) {
             throw new BadRequestException("Il ruolo " + ruoloDTO.ruolo() + " esiste gia!");
         } else {
             Ruolo ruolo = new Ruolo(ruoloDTO.ruolo().toUpperCase());
@@ -59,7 +59,7 @@ public class RuoliService {
     public Ruolo save(RuoloDTO ruoloDTO, UUID utenteId) {
         Utente utente = utentiRepository.findById(utenteId).orElseThrow(() -> new NotFoundException(utenteId));
         Ruolo ruolo;
-        if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo()))) {
+        if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo().toUpperCase()))) {
             Ruolo found = ruoloRepository.findByRuolo(ruoloDTO.ruolo().toUpperCase())
                     .orElseThrow(() -> new NotFoundException(ruoloDTO.ruolo().toUpperCase()));
             if (utente.getRuoli().stream().anyMatch(ruolo1 -> ruolo1.equals(found))) {
