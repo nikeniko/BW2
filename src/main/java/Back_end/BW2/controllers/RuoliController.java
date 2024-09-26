@@ -4,6 +4,7 @@ import Back_end.BW2.entities.Ruolo;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.RuoloDTO;
 import Back_end.BW2.services.RuoliService;
+import Back_end.BW2.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class RuoliController {
     @Autowired
     private RuoliService ruoliService;
+    @Autowired
+    private UtentiService utentiService;
 
     @GetMapping("/{ruoloId}")
     public Ruolo getById(@PathVariable UUID ruoloId) {
@@ -48,5 +51,19 @@ public class RuoliController {
 
             return this.ruoliService.save(body);
         }
+    }
+
+    @DeleteMapping("/deleteRuolo/{ruoloId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteRuolo(@PathVariable UUID ruoloId) {
+        Ruolo ruolo = ruoliService.findIdRuolo(ruoloId);
+        utentiService.findAllUtenti().forEach(utente -> {
+            utente.rimuoviRuolo(ruolo);
+            utentiService.save(utente);
+        });
+
+        this.ruoliService.deleteRuolo(ruoloId);
+
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -64,6 +65,11 @@ public class UtentiService {
         if (page > 20) page = 20;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.utentiRepository.findAll(pageable);
+    }
+
+    public List<Utente> findAllUtenti() {
+
+        return this.utentiRepository.findAll();
     }
 
     // cerco utenti byId

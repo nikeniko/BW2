@@ -53,13 +53,7 @@ public class MyRunner implements CommandLineRunner {
 
                 ruoliService.save(new RuoloDTO("UTENTE"));
                 ruoliService.save(new RuoloDTO("ADMIN"));
-//                Ruolo ruoloAdmin = ruoliService.findByRuolo("ADMIN");
-//                Utente utenteAdmin = new Utente("gabrygabra", "gabrielazamfiri@gmail.com",
-//                        "1234", "Gabriel", "Azamfiri",
-//                        "https://ui-avatars.com/api/?name=Gabriel+Azamfiri");
-//
-//                utenteAdmin.aggiungiRuolo(ruoloAdmin);
-//                utentiService.save(utenteAdmin);
+
             }
         } catch (Exception e) {
             throw new NotFoundException("Errore nella creazione ruoli base: " + e.getMessage());

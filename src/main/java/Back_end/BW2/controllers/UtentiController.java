@@ -90,6 +90,18 @@ public class UtentiController {
         }
     }
 
+    @DeleteMapping("/{utenteId}/deleteRuolo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void deleteRuolo(@PathVariable UUID utenteId, @RequestBody @Validated RuoloDTO body) {
+        Utente utente = utentiService.findById(utenteId);
+        Ruolo ruolo = ruoliService.findByRuolo(body.ruolo());
+        utente.rimuoviRuolo(ruolo);
+
+        this.utentiService.save(utente);
+
+    }
+
 
     // CLOUDINARY
 

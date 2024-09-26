@@ -47,8 +47,13 @@ public class RuoliService {
 
 
     public Ruolo save(RuoloDTO ruoloDTO) {
-        Ruolo ruolo = new Ruolo(ruoloDTO.ruolo().toUpperCase());
-        return this.ruoloRepository.save(ruolo);
+        if (ruoloRepository.findAll().stream().anyMatch(obj -> obj.getRuolo().equals(ruoloDTO.ruolo()))) {
+            throw new BadRequestException("Il ruolo " + ruoloDTO.ruolo() + " esiste gia!");
+        } else {
+            Ruolo ruolo = new Ruolo(ruoloDTO.ruolo().toUpperCase());
+            return this.ruoloRepository.save(ruolo);
+        }
+
     }
 
     public Ruolo save(RuoloDTO ruoloDTO, UUID utenteId) {
@@ -74,5 +79,10 @@ public class RuoliService {
             return ruolo;
         }
 
+    }
+
+    public void deleteRuolo(UUID ruoloId) {
+        Ruolo trovato = this.findIdRuolo(ruoloId);
+        this.ruoloRepository.delete(trovato);
     }
 }
