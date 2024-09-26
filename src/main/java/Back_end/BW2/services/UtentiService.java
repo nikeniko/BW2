@@ -8,6 +8,7 @@ import Back_end.BW2.payloads.UtenteDTO;
 import Back_end.BW2.payloads.UtenteRespDTO;
 import Back_end.BW2.repositories.RuoloRepository;
 import Back_end.BW2.repositories.UtentiRepository;
+import Back_end.BW2.tools.MailSander;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class UtentiService {
     @Autowired
     private Cloudinary cloudinary;
 
+    @Autowired
+    private MailSander mailSander;
+
     public Utente findByEmail(String email) {
         return utentiRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("L'utente con l'email " + email + " non è stato trovato."));
     }
@@ -52,7 +56,13 @@ public class UtentiService {
                 "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
         newUtente.aggiungiRuolo(ruoloUtente);
         // salvo il nuovo record
-        return new UtenteRespDTO(this.utentiRepository.save(newUtente).getId());
+        Utente utenteSalvato = this.utentiRepository.save(newUtente);
+
+        // invio email conferma registrazione
+        mailSander.sendRegistrationEmail(utenteSalvato);
+
+
+        return new UtenteRespDTO(utenteSalvato.getId());
     }
 
     public UtenteRespDTO save(Utente body) {
