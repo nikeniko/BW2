@@ -1,7 +1,7 @@
 package Back_end.BW2.controllers;
 
 import Back_end.BW2.exceptions.BadRequestException;
-import Back_end.BW2.payloads.UtenteDTO;
+import Back_end.BW2.payloads.*;
 import Back_end.BW2.payloads.UtenteLoginDTO;
 import Back_end.BW2.payloads.UtenteLoginRespDTO;
 import Back_end.BW2.payloads.UtenteRespDTO;
