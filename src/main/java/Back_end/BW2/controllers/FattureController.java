@@ -1,10 +1,13 @@
 package Back_end.BW2.controllers;
 
 import Back_end.BW2.entities.Fattura;
+import Back_end.BW2.entities.StatoFattura;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.NewFatturaDTO;
 import Back_end.BW2.payloads.NewFatturaRespDTO;
+import Back_end.BW2.payloads.StatoFattDTO;
 import Back_end.BW2.services.FattureService;
+import Back_end.BW2.services.StatoFattService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,8 +27,10 @@ public class FattureController {
 
     @Autowired
     private FattureService fattureService;
+    @Autowired
+    private StatoFattService statoFattService;
 
-    //
+    // METODI
 
     // 1 --> GET ALL
 
@@ -50,8 +55,6 @@ public class FattureController {
 
             throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
         } else {
-
-
             return new NewFatturaRespDTO(this.fattureService.save(body).getId());
         }
     }
@@ -66,6 +69,7 @@ public class FattureController {
 
 
     // 4 --> PUT
+
     @PutMapping("/{fattureId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public NewFatturaRespDTO findIdAndUpdateFatture(@PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {
@@ -79,6 +83,20 @@ public class FattureController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findIdFattureAndDelete(@PathVariable UUID fattureId) {
         this.fattureService.findIdFattureAndDelete(fattureId);
+    }
+
+    @PostMapping("/{fatturaId}/nuovostato")
+    @ResponseStatus(HttpStatus.CREATED)
+    public NewFatturaRespDTO creaStatoFatt(@PathVariable UUID fatturaId, @RequestBody @Validated StatoFattDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            String messages = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(". "));
+            throw new BadRequestException(("Errori nel Payload. " + messages));
+        } else {
+            Fattura fattura = this.fattureService.findIdFatture(fatturaId);
+            StatoFattura statoFattura = this.statoFattService.findByStato(body.stato());
+            fattura.setStatoFattura(statoFattura);
+            return new NewFatturaRespDTO(this.fattureService.saveFattObj(fattura).getId());
+        }
     }
 
 
