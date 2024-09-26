@@ -4,6 +4,7 @@ import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.entities.Indirizzo;
 import Back_end.BW2.entities.Utente;
 import Back_end.BW2.enums.TipoAzienda;
+import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.ClienteDTO;
 import Back_end.BW2.payloads.ClienteRespDTO;
@@ -52,7 +53,8 @@ public class ClientiService {
     // 2 --> GET ID
 
     public Cliente findIdCliente(UUID clienteId) {
-        return this.clientiRepository.findById(clienteId).orElseThrow(() -> new NotFoundException(clienteId));
+        return clientiRepository.findById(clienteId)
+                .orElseThrow(() -> new NotFoundException("Cliente con id " + clienteId + " non trovato."));
     }
 
     // 3 --> PUT
@@ -77,7 +79,11 @@ public class ClientiService {
 
     public void findIdClienteAndDelete(UUID fattureId) {
         Cliente found = this.findIdCliente(fattureId);
-        this.clientiRepository.delete(found);
+        try {
+            this.clientiRepository.delete(found);
+        } catch (Exception e) {
+            throw new BadRequestException("Errore nella cancellazione del cliente: " + e.getMessage());
+        }
     }
 
     // 5 --> SAVE

@@ -67,8 +67,10 @@ public class UtentiService {
     }
 
     // cerco utenti byId
+
     public Utente findById(UUID utenteId) {
-        return this.utentiRepository.findById(utenteId).orElseThrow(() -> new NotFoundException(utenteId));
+        return this.utentiRepository.findById(utenteId)
+                .orElseThrow(() -> new NotFoundException("L'utente con l'id " + utenteId + " non è stato trovato."));
     }
 
     // delete utente
