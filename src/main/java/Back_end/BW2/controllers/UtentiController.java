@@ -115,20 +115,4 @@ public class UtentiController {
         }
     }
 
-
-//    @GetMapping("/me/fatture")
-//    public Fattura getFattura(@AuthenticationPrincipal Fattura fatturaCorrente) {
-//        return fatturaCorrente;
-//    }
-//
-//    @DeleteMapping("/me/fatture/{fattureId}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId) {           //todo VALUTARE
-//        this.fattureService.findIdFatture(fatturaCorrente.getId());
-//    }
-//
-//    @PutMapping("/me/fatture/{fattureId}")
-//    public NewFatturaRespDTO updateFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {  //todo VALUTARE
-//        return this.fattureService.findIdAndUpdateFatture(fatturaCorrente.getId(), body);
-//    }
 }

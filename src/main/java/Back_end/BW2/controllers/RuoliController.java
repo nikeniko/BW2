@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ruoli")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class RuoliController {
     @Autowired
     private RuoliService ruoliService;
@@ -25,6 +26,7 @@ public class RuoliController {
     private UtentiService utentiService;
 
     @GetMapping("/{ruoloId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Ruolo getById(@PathVariable UUID ruoloId) {
         return this.ruoliService.findIdRuolo(ruoloId);
     }
