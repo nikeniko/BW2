@@ -65,11 +65,10 @@ public class RuoliService {
             if (utente.getRuoli().stream().anyMatch(ruolo1 -> ruolo1.equals(found))) {
                 throw new BadRequestException("L'utente possiede già questo ruolo!");
             } else {
-                utente.aggiungiRuolo(found); //TODO CONTROLLO CHE NON ABBIA GIA IL RUOLO INSERITO
+                utente.aggiungiRuolo(found);
                 utentiRepository.save(utente);
                 return found;
             }
-
 
         } else {
             ruolo = new Ruolo(ruoloDTO.ruolo().toUpperCase());
