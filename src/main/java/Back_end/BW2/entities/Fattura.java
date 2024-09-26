@@ -60,15 +60,15 @@ public class Fattura {
 
     // TO STRING
 
-    @Override
-    public String toString() {
-        return "Fattura{" +
-                "id=" + id +
-                ", data=" + data +
-                ", importo=" + importo +
-                ", numeroFattura=" + numeroFattura +
-                ", cliente=" + cliente +
-                ", statoFattura=" + statoFattura +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Fattura{" +
+//                "id=" + id +
+//                ", data=" + data +
+//                ", importo=" + importo +
+//                ", numeroFattura=" + numeroFattura +
+//                ", cliente=" + cliente +
+//                ", statoFattura=" + statoFattura +
+//                '}';
+//    }
 }
