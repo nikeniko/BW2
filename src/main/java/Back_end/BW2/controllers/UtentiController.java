@@ -1,24 +1,27 @@
 package Back_end.BW2.controllers;
 
-import Back_end.BW2.entities.Fattura;
+import Back_end.BW2.entities.Ruolo;
 import Back_end.BW2.entities.Utente;
-import Back_end.BW2.payloads.NewFatturaDTO;
-import Back_end.BW2.payloads.NewFatturaRespDTO;
+import Back_end.BW2.exceptions.BadRequestException;
+import Back_end.BW2.payloads.RuoloDTO;
 import Back_end.BW2.payloads.UtenteDTO;
 import Back_end.BW2.payloads.UtenteRespDTO;
 import Back_end.BW2.services.FattureService;
+import Back_end.BW2.services.RuoliService;
 import Back_end.BW2.services.UtentiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/utenti")
@@ -29,6 +32,10 @@ public class UtentiController {
 
     @Autowired
     private FattureService fattureService;
+
+
+    @Autowired
+    private RuoliService ruoliService;
 
     @GetMapping("/{utenteId}")
     public Utente getById(@PathVariable UUID utenteId) {
@@ -71,6 +78,17 @@ public class UtentiController {
         return this.utentiService.findByIdAndUpdate(utenteCorrenteAutenticato.getId(), body);
     }
 
+    @PostMapping("/{utenteId}/newRuolo")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Ruolo addNewRuolo(@PathVariable UUID utenteId, @RequestBody @Validated RuoloDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            String messages = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(". "));
+            throw new BadRequestException(("Errori nel Payload. " + messages));
+        } else {
+            return this.ruoliService.save(body, utenteId);
+        }
+    }
+
 
     // CLOUDINARY
 
@@ -85,19 +103,19 @@ public class UtentiController {
     }
 
 
-    @GetMapping("/me/fatture")
-    public Fattura getFattura(@AuthenticationPrincipal Fattura fatturaCorrente) {
-        return fatturaCorrente;
-    }
-
-    @DeleteMapping("/me/fatture/{fattureId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId) {           //todo VALUTARE
-        this.fattureService.findIdFatture(fatturaCorrente.getId());
-    }
-
-    @PutMapping("/me/fatture/{fattureId}")
-    public NewFatturaRespDTO updateFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {  //todo VALUTARE
-        return this.fattureService.findIdAndUpdateFatture(fatturaCorrente.getId(), body);
-    }
+//    @GetMapping("/me/fatture")
+//    public Fattura getFattura(@AuthenticationPrincipal Fattura fatturaCorrente) {
+//        return fatturaCorrente;
+//    }
+//
+//    @DeleteMapping("/me/fatture/{fattureId}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deleteFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId) {           //todo VALUTARE
+//        this.fattureService.findIdFatture(fatturaCorrente.getId());
+//    }
+//
+//    @PutMapping("/me/fatture/{fattureId}")
+//    public NewFatturaRespDTO updateFattura(@AuthenticationPrincipal Fattura fatturaCorrente, @PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {  //todo VALUTARE
+//        return this.fattureService.findIdAndUpdateFatture(fatturaCorrente.getId(), body);
+//    }
 }

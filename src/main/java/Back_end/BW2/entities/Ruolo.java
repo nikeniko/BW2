@@ -1,5 +1,6 @@
 package Back_end.BW2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +23,7 @@ public class Ruolo {
     private String ruolo;
 
     @ManyToMany(mappedBy = "ruoli")
+    @JsonIgnore
     private List<Utente> utenteList;
 
     public Ruolo(String ruolo) {

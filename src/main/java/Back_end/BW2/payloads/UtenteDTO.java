@@ -20,8 +20,6 @@ public record UtenteDTO(
         String nome,
         @NotEmpty(message = "Campo obbligatorio. Inserire cognome.")
         @Size(min = 3, max = 30, message = "Il cognome deve essere compreso tra 3 e 30 caratteri")
-        String cognome,
-        @NotEmpty(message = "Campo obbligatorio. Inserire ruolo.")
-        String ruoloUtente
+        String cognome
 ) {
 }
