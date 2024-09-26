@@ -1,6 +1,5 @@
 package Back_end.BW2.entities;
 
-import Back_end.BW2.enums.RuoloUtente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -12,9 +11,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "utenti")
@@ -34,9 +35,9 @@ public class Utente implements UserDetails {
     private String nome;
     private String cognome;
     private String avatar;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ruolo_utente")
-    private RuoloUtente ruoloUtente;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "ruolo_utente")
+//    private RuoloUtente ruoloUtente;
 
     @OneToMany(mappedBy = "utenteId")
     @JsonIgnore
@@ -46,17 +47,15 @@ public class Utente implements UserDetails {
     @JoinTable(name = "ruoli_utenti",
             joinColumns = @JoinColumn(name = "utente_id"),
             inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-    private List<Ruolo> ruoli;
+    private List<Ruolo> ruoli = new ArrayList<>();
 
-    public Utente(String username, String email, String password, String nome, String cognome, String avatar,
-                  RuoloUtente ruoloUtente) {
+    public Utente(String username, String email, String password, String nome, String cognome, String avatar) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nome = nome;
         this.cognome = cognome;
         this.avatar = avatar;
-        this.ruoloUtente = ruoloUtente;
     }
 
     /*public Utente(String username, String email, String password, String nome, String cognome, String avatar, RuoloUtente ruoloUtente*//*, List<Ruolo> ruoli*//*) {
@@ -72,7 +71,7 @@ public class Utente implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.ruoloUtente.name()));
+        return ruoli.stream().map(ruolo -> new SimpleGrantedAuthority(ruolo.getRuolo())).collect(Collectors.toList());
     }
 
     @Override

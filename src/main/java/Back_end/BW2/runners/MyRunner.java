@@ -1,8 +1,10 @@
 package Back_end.BW2.runners;
 
 import Back_end.BW2.exceptions.NotFoundException;
+import Back_end.BW2.payloads.RuoloDTO;
 import Back_end.BW2.services.ComuneService;
 import Back_end.BW2.services.ProvinciaService;
+import Back_end.BW2.services.RuoliService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -18,6 +20,9 @@ public class MyRunner implements CommandLineRunner {
 
     @Autowired
     private ComuneService comuneService;
+
+    @Autowired
+    private RuoliService ruoliService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -37,6 +42,17 @@ public class MyRunner implements CommandLineRunner {
             }
         } catch (Exception e) {
             throw new NotFoundException("Errore nell'import dai file CSV: " + e.getMessage());
+        }
+
+        try {
+            if (!ruoliService.isDatabasePopulated()) {
+
+                ruoliService.save(new RuoloDTO("UTENTE"));
+                ruoliService.save(new RuoloDTO("ADMIN"));
+
+            }
+        } catch (Exception e) {
+            throw new NotFoundException("Errore nella creazione ruoli base: " + e.getMessage());
         }
     }
 }

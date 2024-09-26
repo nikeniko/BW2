@@ -1,11 +1,12 @@
 package Back_end.BW2.services;
 
+import Back_end.BW2.entities.Ruolo;
 import Back_end.BW2.entities.Utente;
-import Back_end.BW2.enums.RuoloUtente;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.UtenteDTO;
 import Back_end.BW2.payloads.UtenteRespDTO;
+import Back_end.BW2.repositories.RuoloRepository;
 import Back_end.BW2.repositories.UtentiRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -27,6 +28,8 @@ public class UtentiService {
     private UtentiRepository utentiRepository;
 
     @Autowired
+    private RuoloRepository ruoloRepository;
+    @Autowired
     private PasswordEncoder bcrypt;
 
     @Autowired
@@ -42,19 +45,11 @@ public class UtentiService {
             throw new BadRequestException("L'email " + body.email() + " è già in uso.");
         });
 
-        RuoloUtente ruoloUtente;
-
-        try {
-            ruoloUtente = RuoloUtente.valueOf(body.ruoloUtente().toUpperCase());
-            if (ruoloUtente == RuoloUtente.ADMIN)
-                throw new Error("Errore. Nessuno può inserirsi come ADMIN");
-        } catch (Exception e) {
-            throw new BadRequestException("Errore. Il ruolo inserito non esiste.");
-        }
+        Ruolo ruoloUtente = ruoloRepository.findByRuolo("UTENTE").orElseThrow(() -> new BadRequestException("Il ruolo non esiste!"));
 
         Utente newUtente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(),
-                "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome(), ruoloUtente);
-
+                "https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
+        newUtente.aggiungiRuolo(ruoloUtente);
         // salvo il nuovo record
         return new UtenteRespDTO(this.utentiRepository.save(newUtente).getId());
     }
@@ -85,18 +80,6 @@ public class UtentiService {
             }
         });
 
-        RuoloUtente ruoloUtente = null;
-
-        try {
-            String ruoloInput = body.ruoloUtente().toUpperCase(); // Rimuove spazi e converte in maiuscolo
-            ruoloUtente = RuoloUtente.valueOf(ruoloInput);  // Corrisponde all'enum
-            if (ruoloUtente == RuoloUtente.ADMIN) {
-                throw new Error("Errore. Nessuno può inserirsi come ADMIN");
-
-            }
-        } catch (Exception e) {
-            throw new BadRequestException("Errore. Il ruolo inserito non esiste.");
-        }
 
         Utente trovato = this.findById(utenteId);
         trovato.setUsername(body.username());
@@ -104,7 +87,6 @@ public class UtentiService {
         trovato.setPassword(bcrypt.encode(body.password()));
         trovato.setNome(body.nome());
         trovato.setCognome(body.cognome());
-        trovato.setRuoloUtente(ruoloUtente);
 
 
         // salvo il nuovo record
