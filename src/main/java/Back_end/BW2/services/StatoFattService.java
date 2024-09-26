@@ -63,5 +63,9 @@ public class StatoFattService {
         return new StatoFattRespDTO(this.statoFattRepository.save(stato).getId());
     }
 
+    public StatoFattura findByStato(String stato) {
+        return this.statoFattRepository.findByStato(stato).orElseThrow(() -> new NotFoundException(stato));
+    }
+
 
 }

@@ -1,11 +1,11 @@
 package Back_end.BW2.controllers;
 
 import Back_end.BW2.entities.Fattura;
+import Back_end.BW2.entities.StatoFattura;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.NewFatturaDTO;
 import Back_end.BW2.payloads.NewFatturaRespDTO;
 import Back_end.BW2.payloads.StatoFattDTO;
-import Back_end.BW2.payloads.StatoFattRespDTO;
 import Back_end.BW2.services.FattureService;
 import Back_end.BW2.services.StatoFattService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,15 +85,19 @@ public class FattureController {
         this.fattureService.findIdFattureAndDelete(fattureId);
     }
 
-    @PostMapping("/{fattureId}/nuovo-stato")
+    @PostMapping("/{fatturaId}/nuovostato")
     @ResponseStatus(HttpStatus.CREATED)
-    public StatoFattRespDTO creaStatoFatt(@RequestBody @Validated StatoFattDTO body, BindingResult validation) {
+    public NewFatturaRespDTO creaStatoFatt(@PathVariable UUID fatturaId, @RequestBody @Validated StatoFattDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
             String messages = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(". "));
             throw new BadRequestException(("Errori nel Payload. " + messages));
         } else {
-            return this.statoFattService.save(body);
+            Fattura fattura = this.fattureService.findIdFatture(fatturaId);
+            StatoFattura statoFattura = this.statoFattService.findByStato(body.stato());
+            fattura.setStatoFattura(statoFattura);
+            return new NewFatturaRespDTO(this.fattureService.saveFattObj(fattura).getId());
         }
     }
+
 
 }

@@ -112,5 +112,10 @@ public class FattureService {
         return this.fattureRepository.save(newFattura);
     }
 
+    public Fattura saveFattObj(Fattura body) {
+
+        return this.fattureRepository.save(body);
+    }
+
 
 }
