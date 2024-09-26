@@ -4,7 +4,10 @@ import Back_end.BW2.entities.Fattura;
 import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.payloads.NewFatturaDTO;
 import Back_end.BW2.payloads.NewFatturaRespDTO;
+import Back_end.BW2.payloads.StatoFattDTO;
+import Back_end.BW2.payloads.StatoFattRespDTO;
 import Back_end.BW2.services.FattureService;
+import Back_end.BW2.services.StatoFattService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,8 @@ public class FattureController {
 
     @Autowired
     private FattureService fattureService;
+    @Autowired
+    private StatoFattService statoFattService;
 
     // METODI
 
@@ -80,5 +85,15 @@ public class FattureController {
         this.fattureService.findIdFattureAndDelete(fattureId);
     }
 
+    @PostMapping("/{fattureId}/nuovo-stato")
+    @ResponseStatus(HttpStatus.CREATED)
+    public StatoFattRespDTO creaStatoFatt(@RequestBody @Validated StatoFattDTO body, BindingResult validation) {
+        if (validation.hasErrors()) {
+            String messages = validation.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.joining(". "));
+            throw new BadRequestException(("Errori nel Payload. " + messages));
+        } else {
+            return this.statoFattService.save(body);
+        }
+    }
 
 }

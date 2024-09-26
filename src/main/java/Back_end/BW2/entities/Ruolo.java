@@ -29,4 +29,8 @@ public class Ruolo {
     public Ruolo(String ruolo) {
         this.ruolo = ruolo;
     }
+
+    public Ruolo getRuolo() {
+        return new Ruolo(ruolo);
+    }
 }

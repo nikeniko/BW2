@@ -89,7 +89,8 @@ public class FattureService {
         Cliente foundCliente = this.clientiRepository.findById(UUID.fromString(body.cliente())).orElseThrow(() -> new NotFoundException(UUID.fromString(body.cliente())));
 
         List<StatoFattura> stati = this.statoFattRepository.findAll();
-        StatoFattura stato = this.statoFattRepository.findFirst(stati);
+        //Optional<StatoFattura> stato = Optional.ofNullable(this.statoFattRepository.findFirstInList(stati));
+        StatoFattura stato = this.statoFattRepository.findFirstInList(stati);
 
         Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), body.numeroFattura(), foundCliente, stato);
 
