@@ -2,12 +2,14 @@ package Back_end.BW2.services;
 
 import Back_end.BW2.entities.Cliente;
 import Back_end.BW2.entities.Fattura;
-import Back_end.BW2.enums.StatoFatture;
+import Back_end.BW2.entities.StatoFattura;
+import Back_end.BW2.exceptions.BadRequestException;
 import Back_end.BW2.exceptions.NotFoundException;
 import Back_end.BW2.payloads.NewFatturaDTO;
 import Back_end.BW2.payloads.NewFatturaRespDTO;
 import Back_end.BW2.repositories.ClientiRepository;
 import Back_end.BW2.repositories.FattureRepository;
+import Back_end.BW2.repositories.StatoFattRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -26,6 +30,8 @@ public class FattureService {
     private FattureRepository fattureRepository;
     @Autowired
     private ClientiRepository clientiRepository;
+    @Autowired
+    private StatoFattRepository statoFattRepository;
 
     // METODI
 
@@ -50,7 +56,22 @@ public class FattureService {
         Fattura found = this.findIdFatture(fattureId);
         found.setImporto(Double.parseDouble(newUserData.importo()));
         found.setNumeroFattura(newUserData.numeroFattura());
-        found.setStatoFatture(StatoFatture.valueOf(newUserData.statoFatture()));
+
+        List<StatoFattura> stati = this.statoFattRepository.findAll();
+
+        for (StatoFattura stato : stati) {
+
+            if (Objects.equals(stato.toString(), newUserData.statoFattura().toUpperCase())) {
+
+                throw new BadRequestException("Stato fattura già esistente.");
+            }
+
+        }
+
+        StatoFattura stato = new StatoFattura(newUserData.statoFattura().toUpperCase());
+
+        found.setStatoFattura(stato);
+
         return new NewFatturaRespDTO(this.fattureRepository.save(found).getId());
     }
 
@@ -64,9 +85,13 @@ public class FattureService {
     // 5 --> SAVE
 
     public Fattura save(NewFatturaDTO body) {
+
         Cliente foundCliente = this.clientiRepository.findById(UUID.fromString(body.cliente())).orElseThrow(() -> new NotFoundException(UUID.fromString(body.cliente())));
-        StatoFatture statoFatture = StatoFatture.valueOf(body.statoFatture());
-        Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), body.numeroFattura(), statoFatture, foundCliente);
+
+        List<StatoFattura> stati = this.statoFattRepository.findAll();
+        StatoFattura stato = this.statoFattRepository.findFirst(stati);
+
+        Fattura newFattura = new Fattura(Double.parseDouble(body.importo()), body.numeroFattura(), foundCliente, stato);
 
         return this.fattureRepository.save(newFattura);
     }

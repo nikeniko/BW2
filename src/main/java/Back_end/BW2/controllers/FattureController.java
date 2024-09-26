@@ -25,7 +25,7 @@ public class FattureController {
     @Autowired
     private FattureService fattureService;
 
-    //
+    // METODI
 
     // 1 --> GET ALL
 
@@ -50,8 +50,6 @@ public class FattureController {
 
             throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
         } else {
-
-
             return new NewFatturaRespDTO(this.fattureService.save(body).getId());
         }
     }
@@ -66,6 +64,7 @@ public class FattureController {
 
 
     // 4 --> PUT
+
     @PutMapping("/{fattureId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public NewFatturaRespDTO findIdAndUpdateFatture(@PathVariable UUID fattureId, @RequestBody @Validated NewFatturaDTO body) {

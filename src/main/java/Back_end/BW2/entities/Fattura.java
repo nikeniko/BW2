@@ -1,6 +1,5 @@
 package Back_end.BW2.entities;
 
-import Back_end.BW2.enums.StatoFatture;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,26 +28,29 @@ public class Fattura {
     @Column(name = "numero_fattura")
     private int numeroFattura;
 
-    @Column(name = "stato_fatture")
-    @Enumerated(EnumType.STRING)
-    private StatoFatture statoFatture;
+//    @Column(name = "stato_fatture")
+//    @Enumerated(EnumType.STRING)
+//    private StatoFatture statoFatture;
 
     @ManyToOne
     @JoinColumn(name = "cliente")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "stato_id")
+    private StatoFattura statoFattura;
+
     // COSTRUTTORI
 
-    public Fattura(double importo, int numeroFattura, StatoFatture statoFatture, Cliente cliente) {
+    public Fattura(double importo, int numeroFattura, Cliente cliente, StatoFattura statoFattura) {
         this.data = LocalDate.now();
         this.importo = importo;
         this.numeroFattura = numeroFattura;
-        this.statoFatture = statoFatture;
         this.cliente = cliente;
+        this.statoFattura = statoFattura;
     }
 
     // TO STRING
-
 
     @Override
     public String toString() {
@@ -57,8 +59,8 @@ public class Fattura {
                 ", data=" + data +
                 ", importo=" + importo +
                 ", numeroFattura=" + numeroFattura +
-                ", statoFatture=" + statoFatture +
                 ", cliente=" + cliente +
+                ", statoFattura=" + statoFattura +
                 '}';
     }
 }
