@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,37 @@ public class FattureController {
                                         @RequestParam(defaultValue = "id") String sortBy) {
         return this.fattureService.findAllFatture(page, size, sortBy);
     }
+
+    @GetMapping("/cliente/{clienteID}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Fattura> findByCliente(@PathVariable("clienteID") UUID clienteID) {
+        return this.fattureService.findByCliente(clienteID);
+    }
+
+    @GetMapping("/stato/{statoFattura}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Fattura> findByStatoFattura(@PathVariable("statoFattura") String statoFattura) {
+        return this.fattureService.findByStatoFattura(statoFattura);
+    }
+
+    @GetMapping("/data/{data}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Fattura> findByData(@PathVariable("data") String data) {
+        return this.fattureService.findByData(data);
+    }
+
+    @GetMapping("/anno/{anno}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Fattura> findByAnno(@PathVariable("anno") int anno) {
+        return this.fattureService.findByAnno(anno);
+    }
+
+    @GetMapping("/between/{minImporto}/{maxImporto}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Fattura> findByImportoBetween(@PathVariable("minImporto") Double minImporto, @PathVariable("maxImporto") Double maxImporto) {
+        return this.fattureService.findByImportoBetween(minImporto, maxImporto);
+    }
+
 
     // 2 --> POST
 
