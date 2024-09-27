@@ -23,7 +23,7 @@ public class MailSander {
                 .queryString("from", this.emailFrom)
                 .queryString("to", recipient.getEmail())
                 .queryString("subject", "Registrazione avvenuta con successo!")
-                .queryString("text", "Salve " + recipient.getNome() + " " + recipient.getCognome() + ", grazie per esserti registrato nella nostra piattaforma. \n Buon lavoro.")
+                .queryString("text", "Salve " + recipient.getNome() + " " + recipient.getCognome() + ", \ngrazie per esserti registrato nella nostra piattaforma. \nBuon lavoro.")
                 .asJson();
 
         System.out.println(response.getBody()); // stampo il messaggio in risposta per rilevare eventuali errori
