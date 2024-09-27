@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -53,6 +55,33 @@ public class FattureService {
                 .orElseThrow(() -> new NotFoundException("Fattura con ID " + fattureId + " non trovata."));
     }
 
+    public List<Fattura> findByCliente(UUID clienteID) {
+        Cliente cliente = clientiRepository.findById(clienteID).orElseThrow(() -> new NotFoundException(clienteID));
+        return this.fattureRepository.findByCliente(cliente);
+
+    }
+
+    public List<Fattura> findByStatoFattura(String statoFattura) {
+        StatoFattura stato = statoFattRepository.findByStato(statoFattura.toUpperCase()).orElseThrow(() -> new NotFoundException("Non esiste lo stato " + statoFattura.toUpperCase()));
+        return this.fattureRepository.findByStatoFattura(stato);
+
+    }
+
+    public List<Fattura> findByData(String date) {
+        LocalDate data = LocalDate.parse(date);
+        return this.fattureRepository.findByData(data);
+
+    }
+
+    public List<Fattura> findByAnno(int anno) {
+        return this.fattureRepository.findByAnno(anno);
+    }
+
+    public List<Fattura> findByImportoBetween(Double minImporto, Double maxImporto) {
+        return this.fattureRepository.findByImportoBetween(minImporto, maxImporto);
+    }
+
+
     // 3 --> PUT
 
     public NewFatturaRespDTO findIdAndUpdateFatture(UUID fattureId, NewFatturaDTO newUserData) {
@@ -62,20 +91,6 @@ public class FattureService {
         Fattura found = this.findIdFatture(fattureId);
 
         found.setImporto(Double.parseDouble(newUserData.importo()));
-//        found.setNumeroFattura(newUserData.numeroFattura());
-
-//        List<StatoFattura> stati = this.statoFattRepository.findAll();
-//
-//        for (StatoFattura stato : stati) {
-//
-//            if (Objects.equals(stato.toString(), newUserData.statoFattura().toUpperCase())) {
-//
-//                throw new BadRequestException("Stato fattura già esistente.");
-//            }
-//        }
-//        StatoFattura stato = new StatoFattura(newUserData.statoFattura().toUpperCase());
-//
-//        found.setStatoFattura(stato);
 
         return new NewFatturaRespDTO(this.fattureRepository.save(found).getId());
 

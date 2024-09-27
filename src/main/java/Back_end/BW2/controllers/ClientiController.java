@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,31 @@ public class ClientiController {
                                         @RequestParam(defaultValue = "id") String sortBy) {
         return this.clientiService.findAllClienti(page, size, sortBy);
     }
+
+    @GetMapping("/fatturatoAnnuale/{fatturatoAnnuale}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Cliente> findByFatturatoAnnuale(@PathVariable("fatturatoAnnuale") int fatturatoAnnuale) {
+        return this.clientiService.findByFatturatoAnnuale(fatturatoAnnuale);
+    }
+
+    @GetMapping("/dataInserimento/{dataInserimento}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Cliente> findByDataInserimento(@PathVariable("dataInserimento") String dataInserimento) {
+        return this.clientiService.findByDataInserimento(dataInserimento);
+    }
+
+    @GetMapping("/dataUltimoContatto/{dataUltimoContatto}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Cliente> findByDataUltimoContatto(@PathVariable("dataUltimoContatto") String dataUltimoContatto) {
+        return this.clientiService.findByDataUltimoContatto(dataUltimoContatto);
+    }
+
+    @GetMapping("/ragioneSociale/{ragioneSociale}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<Cliente> findByRagioneSociale(@PathVariable("ragioneSociale") String ragioneSociale) {
+        return this.clientiService.findByRagioneSociale(ragioneSociale);
+    }
+
 
     // 2 --> POST
     @PostMapping("/crea")
