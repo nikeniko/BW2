@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -49,6 +50,27 @@ public class ClientiService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.clientiRepository.findAll(pageable);
     }
+
+
+    public List<Cliente> findByFatturatoAnnuale(int fatturatoAnnuale) {
+
+        return this.clientiRepository.findByFatturatoAnnuale(fatturatoAnnuale);
+    }
+
+    public List<Cliente> findByDataInserimento(String dataInserimento) {
+        LocalDate data = LocalDate.parse(dataInserimento);
+        return this.clientiRepository.findByDataInserimento(data);
+    }
+
+    public List<Cliente> findByDataUltimoContatto(String dataUltimoContatto) {
+        LocalDate data = LocalDate.parse(dataUltimoContatto);
+        return this.clientiRepository.findByDataUltimoContatto(data);
+    }
+
+    public List<Cliente> findByRagioneSociale(String nomeSocieta) {
+        return this.clientiRepository.findByRagioneSociale(nomeSocieta);
+    }
+
 
     // 2 --> GET ID
 
